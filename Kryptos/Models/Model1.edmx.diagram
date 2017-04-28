@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4d90a62446db4b158791fa80b68a879e" Name="Diagram1" ZoomLevel="95">
+        <EntityTypeShape EntityType="kryptoModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.AspNetUserClaim" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.AspNetUserLogin" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.DeviceTokenInformation" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="kryptoModel.GroupActivitiesType" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.GroupType" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="kryptoModel.KPTY_USER_FORGOT_PASS_OTP_REQ_TBL" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="kryptoModel.KPTY_USER_OTP_EXPIRY_TIME_TBL" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="kryptoModel.KPTY_USER_SECQURITY_QUEST_ANS" Width="1.5" PointX="2.75" PointY="9.75" />
+        <EntityTypeShape EntityType="kryptoModel.MenuGroup" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.MenuGroupMenuOption" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="kryptoModel.MenuOption" Width="1.5" PointX="4.75" PointY="10.75" />
+        <EntityTypeShape EntityType="kryptoModel.Message" Width="1.5" PointX="10.75" PointY="8.75" />
+        <EntityTypeShape EntityType="kryptoModel.MessageSetting" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.MessageTransaction" Width="1.5" PointX="12.75" PointY="5.75" />
+        <EntityTypeShape EntityType="kryptoModel.MobileTypeMaster" Width="1.5" PointX="6.75" PointY="12.75" />
+        <EntityTypeShape EntityType="kryptoModel.Organisation" Width="1.5" PointX="12.75" PointY="11.75" />
+        <EntityTypeShape EntityType="kryptoModel.OtpStatusMaster" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="kryptoModel.Role" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.sysdiagram" Width="1.5" PointX="14.75" PointY="4.75" />
+        <EntityTypeShape EntityType="kryptoModel.Title" Width="1.5" PointX="14.75" PointY="7.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserFacility" Width="1.5" PointX="14.75" PointY="11.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserForgotMpinsOTP" Width="1.5" PointX="2.75" PointY="15.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserRegisterdContact" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserRegistrationOTP" Width="1.5" PointX="16.75" PointY="4.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserRegitrationForInitialLogin" Width="1.5" PointX="4.75" PointY="16.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserRole" Width="1.5" PointX="16.75" PointY="8.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserSecurityQuestion" Width="1.5" PointX="16.75" PointY="12.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserSessionTokenApiCalltbl" Width="1.5" PointX="16.75" PointY="16.75" />
+        <EntityTypeShape EntityType="kryptoModel.City" Width="1.5" PointX="7.375" PointY="17.75" />
+        <EntityTypeShape EntityType="kryptoModel.Country" Width="1.5" PointX="9.375" PointY="17.75" />
+        <EntityTypeShape EntityType="kryptoModel.State" Width="1.5" PointX="11.375" PointY="17.75" />
+        <EntityTypeShape EntityType="kryptoModel.ZipCode" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="kryptoModel.GroupActivity" Width="1.5" PointX="19.75" PointY="3.75" />
+        <EntityTypeShape EntityType="kryptoModel.FacilityMaster" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserActivate" Width="1.5" PointX="9.375" PointY="14.75" />
+        <EntityTypeShape EntityType="kryptoModel.UserLoginInformation" Width="1.5" PointX="13.375" PointY="18.75" />
+        <EntityTypeShape EntityType="kryptoModel.ChatGroupParticipant" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="kryptoModel.ChatGroup" Width="1.5" PointX="19.75" PointY="7.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
