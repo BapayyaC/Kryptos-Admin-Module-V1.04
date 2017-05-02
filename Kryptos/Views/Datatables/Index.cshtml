@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row" id="ListRow">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Manage User > <b>User List</b></div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding-left: 15px; padding-right: 15px; ">
+                                        <table class="table table-bordered" id="usertable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Picture</th>
+                                                    <th>Email ID </th>
+                                                    <th>Contact No. </th>
+                                                    <th>Organization</th>
+                                                    <th>Status</th>
+                                                    <th>Date of Registration</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Bottom{
+    <script type="text/javascript">
+        $(function() {
+            $('#usertable').dataTable({
+                "columns": [
+                    {
+                        "data": "ProfileURL",
+                        render: function(data, type, row) {
+                            var res = data;
+                            if (res != null) {
+                                return "<img src=\"../../Images/" + res + "\" class=\"img-circle\" title=\"Profile Picture\" style=\"width:50px;\">";
+                            }
+                            return res;
+                        }
+                    },
+                    { "data": "EmailId" },
+                    { "data": "ContactNumber" },
+                    {
+                        "data": "Facility",
+                        render: function(data, type, row) {
+                            if (data != null) {
+                                var res = data;
+                                if (res.OOrganisation != null) {
+                                    return res.OOrganisation.Name;
+                                }
+                                return "";
+                            }
+                            return "";
+                        }
+
+                    },
+                    {
+                        "data": "IsActive",
+                        render: function(data, type, row) {
+                            var res = data;
+                            var activestring = "";
+                            var activestringstatus = "";
+                            var inactivestring = "";
+                            var inactivestringstatus = "";
+                            if (res) {
+                                activestringstatus = "active";
+                                activestring = "checked=\"checked\"";
+                            } else {
+                                inactivestringstatus = "active";
+                                inactivestring = "checked=\"checked\"";
+                            }
+                            var rendereddata = "<div class=\"btn-group\" id=\"status\" data-toggle=\"buttons\"><label class=\"btn btn-default btn-on-3 btn-sm " + activestringstatus + "\"><input type=\"radio\" value=\"1\" name=\"multifeatured_module[module_id][status]\" " + activestring + ">Active</label><label class=\"btn btn-default btn-off-3 btn-sm " + inactivestringstatus + "\"><input type=\"radio\" value=\"0\" name=\"multifeatured_module[module_id][status]\" " + inactivestring + ">Inactive</label></div>";
+                            return rendereddata;
+                        }
+                    },
+                    {
+                        data: "CreatedDate",
+                        render: function(data, type, row) {
+                            var res = data;
+                            if (res != null) {
+                                res = res.replace("/Date(", "").replace(")/", "");
+                                var d = new Date(parseInt(res));
+                                return d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+                            }
+                            return res;
+                        }
+                    },
+                    {
+                        data: "USERID",
+                        render: function(data, type, row) {
+                            var res = data;
+                            return res = "<p align=\"center\"><a href=\"#\"><img src=\"../../styles/imgs/edit.png\" title=\"Edit\" width=\"20\" height=\"20\" border=\"0\" style=\"margin-right:5px\" id=\"btnEdit_" + res + "\"> <img src=\"../../styles/imgs/delete.png\" title=\"Delete\" width=\"20\" height=\"20\" border=\"0\" id=\"btnDelete_" + res + "\"></a></p>";
+                        }
+                    }
+                ],
+                bProcessing: true,
+                sAjaxSource: '@Url.Action("LoadUserInfo", "Datatables")'
+            });
+        });
+    </script>
+}

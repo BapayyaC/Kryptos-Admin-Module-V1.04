@@ -1,0 +1,485 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div id="notes"></div>
+</div>
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row" id="EditRow">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a href="#">Manage User</a> &gt; Import Users
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="content">
+                                            <form class="login-form" id="UsersForm" method="post">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Organizations</label>
+                                                                <span class="compulsory">*</span>
+                                                                <div class="input-icon">
+                                                                    <select class="form-control" id="ddlOrganisation" name="Organisation"></select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Facility</label>
+                                                                <span class="compulsory">*</span>
+                                                                <div class="input-icon">
+                                                                    <select class="form-control" id="ddlFacility" name="Facility"></select>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div id="fileUploadHolder">
+                                                            </div>
+                                                            <div class="form-group" id="UploadHolder">
+                                                                <div class="input-icon">
+                                                                    <button type="button" id="btnUpload" class="btn btn-info">Upload</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" id="usertableHolder">
+                                                        <div class="col-md-12">
+                                                            <table id="usertable">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="datatable-headerrow">Title</th>
+                                                                        <th class="datatable-headerrow">First Name</th>
+                                                                        <th class="datatable-headerrow">Last Name</th>
+                                                                        <th class="datatable-headerrow">Email Id</th>
+                                                                        <th class="datatable-headerrow">Contact Number</th>
+                                                                        <th class="datatable-headerrow">Address</th>
+                                                                        <th class="datatable-headerrow">Zip Code</th>
+                                                                        <th class="datatable-headerrow">About User</th>
+                                                                        <th class="datatable-headerrow">Activate User</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12" id="ErrorListHolder">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 input-icon text-right">
+                                                            <button type="button" id="btnCancel" class="btn btn-default" style="margin-right: 5px;">Cancel</button>
+                                                            <button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Bottom{
+    <script type="text/javascript">
+    var $UserTable;
+    var hasErrors = false;
+    $(document).ready(function () {
+        $('#btnSubmit').prop('disabled', true);
+        notes = $('#notes').notify({
+            type: 'notes',
+            sticky: true,
+            delay: 3000,
+            removeIcon: '<i class="fa fa-remove"></i>'
+        });
+
+        $('#usertable').dataTable({
+            destroy: true
+        });
+
+        $('#fileUploadHolder').empty().append('<div class="form-group">' + '<div class="input-icon">' + '<input type="file" id="fileUpload">' + '</div>' + '</div>');
+
+        $('#UploadHolder').hide();
+
+        $('#fileUpload').simpleFileInput({
+            placeholder: 'Select the File',
+            buttonText: 'Select',
+            allowedExts: ['xls', 'xlsx'],
+            onError: function () {
+
+            },
+            onFileSelect: function () {
+
+            }
+        });
+
+
+        $('#usertableHolder').hide();
+        $('#ErrorListHolder').hide();
+
+        $("#ddlFacility").change(function () {
+            if ($("#ddlFacility").val() !== "0") {
+                ShowUploader();
+                $('#UploadHolder').show();
+                $("#usertableHolder").hide();
+                $('#btnSubmit').prop('disabled', true);
+            } else {
+                HideUploader();
+                $("#usertableHolder").hide();
+                $('#UploadHolder').hide();
+                $('#btnSubmit').prop('disabled', true);
+
+
+            }
+        });
+
+        function HideUploader() {
+            $('#fileUploadHolder').empty();
+        }
+
+        function ShowUploader() {
+            $('#fileUploadHolder').empty().append('<div class="form-group">' + '<div class="input-icon">' + '<input type="file" id="fileUpload">' + '</div>' + '</div>');
+
+            $('#fileUpload').simpleFileInput({
+                placeholder: 'Select the File',
+                buttonText: 'Select',
+                allowedExts: ['xls', 'xlsx'],
+                onError: function () {
+
+                },
+                onFileSelect: function () {
+
+                }
+            });
+        }
+
+        $("#btnCancel").click(function () {
+            $("#btnSubmit").prop('disabled', true);
+            $('#UploadHolder').hide();
+            $('#usertableHolder').hide();
+            $('#ErrorListHolder').empty().hide();
+            $("#btnUpload").hide();
+            HideUploader();
+
+         
+
+            $.ajax({
+                url: '@Url.Action("GetAllOrganisations", "UserImport")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                success: function (organisations) {
+                    var options = "<option value=\"0\"> Please Select </option>";
+                    for (var i = 0; i < organisations.length; i++) {
+                        var name = organisations[i].Name;
+                        options += "<option value=\"" + organisations[i].OrganisationId + "\">" + name + "</option>";
+                    }
+
+                    $("#ddlOrganisation").empty().append(options);
+                }
+            });
+
+
+            $("#ddlFacility").empty();
+
+
+            $("#ddlFacility").change(function () {
+                if ($("#ddlFacility").val() !== "0") {
+                   
+                    $('#UploadHolder').show();
+                    $("#btnUpload").show();
+                } else {
+                    
+                    $('#UploadHolder').hide();
+                    $("#btnUpload").hide();
+                }
+            });
+
+
+        });
+
+
+        function appendChars(value, desiredlength, requiredchar) {
+            if (value == null) return value;
+            if ((value + "").length >= desiredlength) return value;
+            var missing = desiredlength - (value + "").length;
+            var res = requiredchar;
+            for (var i = 0; i < missing - 1; i++) {
+                res += requiredchar;
+            }
+            return res + value;
+        }
+
+        var notes;
+
+        function callnotify(message, type) {
+            var msgtype = "success";
+            switch (type) {
+                case 1:
+                    msgtype = "success";
+                    break;
+                case 2:
+                    msgtype = "info";
+                    break;
+                case 3:
+                    msgtype = "warning";
+                    break;
+                case 4:
+                    msgtype = "danger";
+                    break;
+                default:
+                    msgtype = "success";
+                    break;
+            }
+
+            notes.show(message, {
+                // 'success', 'info', 'warning', 'danger'
+                type: '' + msgtype + ''
+            });
+        }
+
+
+
+        $("#btnSubmit").click(function () {
+            if (!hasErrors) {
+                $.ajax({
+                    url: '@Url.Action("SaveRecords", "UserImport")',
+                    type: "Get",
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    success: function (users) {
+                        
+                        HideUploader();
+                        $('#UploadHolder').hide();
+                        hasErrors = false;
+                        callnotify("Users Imported Successfully", 2);
+                        $("#usertableHolder").hide();
+
+
+                        $.ajax({
+                            url: '@Url.Action("GetAllOrganisations", "UserImport")',
+                            type: "Get",
+                            contentType: "application/json; charset=utf-8",
+                            datatype: "json",
+                            success: function (organisations) {
+                                $('#btnSubmit').prop('disabled', true);
+                                var options = "<option value=\"0\"> Please Select </option>";
+                                for (var i = 0; i < organisations.length; i++) {
+                                    var name = organisations[i].Name;
+                                    options += "<option value=\"" + organisations[i].OrganisationId + "\">" + name + "</option>";
+                                }
+
+                                $("#ddlOrganisation").empty().append(options);
+                            }
+                        });
+
+
+                        $("#ddlFacility").empty();
+
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Clear the following ERRORs and try again...");
+            }
+        });
+
+        $("#btnUpload").click(function () {
+           
+            
+
+           
+            if ($("#fileUpload").get(0).files[0] != null) {
+                if (window.FormData !== undefined) {
+                    var fileUpload = $("#fileUpload").get(0).files[0];
+                    var fileData = new FormData();
+                    fileData.append(fileUpload.name, fileUpload);
+                    fileData.append('FacilityId', $("#ddlFacility").val());
+                    $.ajax({
+                        url: '@Url.Action("UploadFiles", "UserImport")',
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: fileData,
+                        success: function (users) {
+                           
+                            $('#ErrorListHolder').empty().hide();
+                            // $('#usertableHolder').hide();
+                            HideUploader();
+                            var datatype = Object.prototype.toString.call(users);
+                            if (datatype === "[object String]") {
+                                hasErrors = true;
+                                var data = users.split('\n');
+                                var renderer = '<div class="alert alert-danger fade in">';
+                                for (var i = 0; i < data.length; i++) {
+                                    renderer += data[i] + "<br/>";
+                                }
+                                renderer += '</div>';
+                                $('#ErrorListHolder').show();
+                                $('#ErrorListHolder').empty().append(renderer);
+                            } else if (datatype === "[object Array]") {
+                                hasErrors = false;
+                                $("#btnSubmit").prop('disabled', false);
+                                HideUploader();
+                                $('#UploadHolder').hide();
+
+                                $('#usertable').dataTable({
+                                    destroy: true,
+                                    data: users,
+                                    "columns": [
+                                        {
+                                            "data": "TitleName"
+                                        },
+                                        {
+                                            "data": "FirstName"
+                                        },
+                                        {
+                                            "data": "LastName"
+                                        },
+                                        {
+                                            "data": "EmailId"
+                                        },
+                                         {
+                                             "data": "ContactNumber"
+                                         },
+                                         {
+                                               "data": "Address"
+                                         },
+                                          {
+                                              "data": "SecurityQuestion2",
+                                              render: function (data, type, row) {
+                                                  var res = data;
+
+
+                                                  if (res != null) {
+
+                                                      res = appendChars(res, 5, "0");
+                                                      return res;
+                                                  }
+
+                                              }
+                                          },
+                                        {
+                                            "data": "Notes"
+                                        },
+                                       
+                                        {
+                                            "data": "IsActive"
+                                        }
+                                    ]
+                                });
+                                $('#usertableHolder').show();
+                              
+                            } else {
+                                // handle others...
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                }
+            } else {
+                alert("File is Invalid");
+            }
+
+        });
+
+        HideUploader();
+        $('#UploadHolder').hide();
+
+        $.ajax({
+            url: '@Url.Action("GetAllOrganisations", "UserImport")',
+            type: "Get",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (organisations) {
+                var options = "<option value=\"0\"> Please Select </option>";
+                for (var i = 0; i < organisations.length; i++) {
+                    var name = organisations[i].Name;
+                    options += "<option value=\"" + organisations[i].OrganisationId + "\">" + name + "</option>";
+                }
+
+                $("#ddlOrganisation").empty().append(options);
+
+                $("#ddlOrganisation").change(function () {
+
+                    HideUploader();
+                    $('#UploadHolder').hide();
+                    $('#ErrorListHolder').hide();
+                    $('#usertableHolder').hide();
+                    $('#btnSubmit').prop('disabled', true);
+
+                    var orgselection = $("#ddlOrganisation").val();
+                  
+
+                    if (orgselection == 0)
+                    {
+                        $("#ddlFacility").empty().append("<option value=\"0\"> Please Select </option>");
+                    }
+                    else {
+
+                    $.ajax({
+                        url: '@Url.Action("GetMatchingFacilityMasters", "UserImport")',
+                        type: "Get",
+                        data: { selectedOrg: '' + orgselection + '' },
+                        contentType: "application/json; charset=utf-8",
+                        datatype: "json",
+                        success: function (facilities) {
+                          
+
+
+                                var options1 = "<option value=\"0\"> Please Select </option>";
+                                for (var i = 0; i < facilities.length; i++) {
+                                    var name = facilities[i].FacilityMasterName;
+                                    options1 += "<option value=\"" + facilities[i].FacilityMasterId + "\">" + name + "</option>";
+                                }
+
+                                $("#ddlFacility").empty().append(options1);
+                            
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                }
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+
+
+    //Detect object datatype in JS
+
+    //> Object.prototype.toString.call([1,2,3])
+    //"[object Array]"
+    //> Object.prototype.toString.call("foo bar")
+    //"[object String]"
+    //> Object.prototype.toString.call(45)
+    //"[object Number]"
+    //> Object.prototype.toString.call(false)
+    //"[object Boolean]"
+
+    </script>
+}

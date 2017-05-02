@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row" id="ListRow">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a href="#">Manage User </a> > Users List
+                                    <button type="button" id="btnCreate" class="btn btn-warning pull-right" style="padding: 2px; margin-top: -3px;" onclick="CreateNewRecord()" style="margin:10px;">Create New User</button>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                                        <form class="login-form" id="UsersForm" method="post">
+                                            
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Bottom{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+    </script>
+}

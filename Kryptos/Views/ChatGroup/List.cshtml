@@ -1,0 +1,701 @@
+﻿@model IEnumerable<Kryptos.Models.ChatGroup>
+@using System.Configuration
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    string UploadDirectory = ConfigurationManager.AppSettings["Image"];
+    var img = UploadDirectory + "/" + "Default.png";
+    }
+
+
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row" id="ListRow">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <a href="#">Manage Group </a> > Group List
+                                    <button type="button" id="btnCreate" class="btn btn-warning  pull-right" onclick="CreateNewRecord()" style="padding: 2px; margin-top: -3px;" ">Create New Group</button>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding-left: 15px; padding-right: 15px; ">
+
+                                        <div class="row" style="padding-left: 15px; padding-right: 15px; ">
+                                            <table class="table table-bordered" id="Grouptable">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="100px" class="datatable-headerrow">Group Image</th>
+                                                        <th>Group Name</th>
+                                                        <!--<th width="100px">Group Type</th>-->
+                                                        <th width="100px" class="datatable-headerrow">Status</th>
+                                                        <th width="150px" class="datatable-headerrow">Created Date</th>
+                                                        <th width="100px" class="datatable-headerrow">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div id="notes"></div>
+                    </div>
+
+                    <div class="row" id="EditRow">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><a href="#" onclick="cancelClicked()">Manage Group</a> &gt; <span id="sp1"></span> Group</div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="content">
+                                            <form class="login-form" id="GroupForm" method="post">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9" id="lblOrganizationName">Group Name <span class="compulsory">*</span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Enter Group Name" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtGroupName" name="GroupName">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">About Group <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Enter Description about the Group " tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <textarea rows="5" class="form-control placeholder-no-fix" placeholder="" id="txtAboutGroup" name="AboutGroup"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9"></label>
+                                                                <div class="input-icon checkbox">
+                                                                    <label class="control-label">
+                                                                        <input type="checkbox" id="chkIsActive" name="IsActive">
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                        <b>Activate Group</b>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-8">
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Group Users <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Select Group Users" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="row">
+
+
+                                                                    <div class="col-md-5">
+
+                                                                        <label class="control-label visible-ie8 visible-ie9" style="vertical-align:middle;">Users Selection <span class="compulsory"></span></label>
+                                                                        <br />
+                                                                        <div class="" style="border:1px solid black;">
+                                                                            <input type="text" class="form-control" id="input-search" name="SourceTreeviewSearch" placeholder="Type to search..." value="">
+
+                                                                            <div id="default-tree" style="height: 400px; overflow: scroll;"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2 vcenter" style="height: 400px;">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 padding-10">
+                                                                                <a href="#" id="updateSelections" class="btn btn-block btn-sm btn-info">Update List <span class="glyphicon glyphicon-refresh"></span></a>
+                                                                            </div>
+                                                                            <div class="col-md-12 padding-10">
+                                                                                <a href="#" id="SelectAll" class="btn btn-block btn-sm btn-success">Select All <span class="glyphicon glyphicon-ok"></span></a>
+                                                                            </div>
+                                                                            <div class="col-md-12 padding-10">
+                                                                                <a href="#" id="deSelectAll" class="btn btn-block btn-sm btn-danger">De-Select All <span class="glyphicon glyphicon-remove"></span></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-5">
+                                                                        <label class="control-label visible-ie8 visible-ie9"> Selected Users <span class="compulsory"></span></label>
+                                                                        <br />
+                                                                        <div class="" style="border:1px solid black;">
+                                                                            <input type="text" class="form-control" id="result-input-search" name="DestinationTreeviewSearch" placeholder="Type to search..." />
+
+                                                                            <div id="result-tree" style="height: 400px; overflow: scroll;"></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row pull-right" style="padding-top:20px;">
+                                                    <div class="col-md-12 ">
+                                                        <div class="col-md-12 ">
+                                                            <button type="button" id="btnCancel" class="btn btn-default" style="margin-right: 5px;" onclick="cancelClicked()">Cancel</button>
+                                                            <button type="button" id="submit" class="btn btn-primary" onclick="submitClicked()">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Bottom{
+    <script type="text/javascript">
+
+
+    // $.validator.addMethod(
+    //    "dropdownlistForGroupType",
+    //    function (value, element, condition) {
+    //        return $(element).val() != 0;
+    //    },
+    //    "Please Select GroupType"
+    //);
+
+    var $defaultTree;
+    var $resultTree;
+
+    function performRefresh() {
+        $.showLoading({
+            name: 'circle-fade'
+        });
+        var ress = $defaultTree.treeview("getChecked");
+        var arr = [];
+        for (var i = 0; i < ress.length; i++) {
+            var res = {};
+            if (ress[i].nodetype === 0) {
+                res.value = ress[i].value;
+                res.text = ress[i].text;
+                res.parent = ress[i].parent;
+                arr.push(res);
+            }
+        }
+        var json = JSON.stringify(arr);
+        $.ajax({
+            url: '@Url.Action("SubResults", "ChatGroup")',
+            type: "Get",
+            data: { selections: '' + json + '', currentrecord: '' + recordid + '' },
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            traditional: true,
+            success: function (result_myTree) {
+                $resultTree = $('#result-tree').treeview({
+                    data: result_myTree,
+                    levels: 3,
+                    expandIcon: 'glyphicon glyphicon-plus',
+                    collapseIcon: 'glyphicon glyphicon-minus',
+                    emptyIcon: 'glyphicon',
+                    nodeIcon: "glyphicon glyphicon-user",
+                    selectedIcon: '',
+                    //checkedIcon: 'glyphicon glyphicon-check',
+                    checkedIcon: 'fa fa-check-square-o fa-2x extra-margin',
+                    //uncheckedIcon: 'glyphicon glyphicon-unchecked',
+                    uncheckedIcon: 'fa fa-square-o fa-2x extra-margin',
+                    color: '#000000',
+                    backColor: '#FFFFFF',
+                    borderColor: '#dddddd',
+                    onhoverColor: '#F5F5F5',
+                    selectedColor: '#FFFFFF',
+                    selectedBackColor: '#428bca',
+                    searchResultColor: '#FFFFFF',
+                    searchResultBackColor: '#a94442',
+                    highlightSelected: false,
+                    highlightSearchResults: true,
+                    showBorder: true
+                });
+                var search = function (e) {
+                    var pattern = $('#result-input-search').val();
+                    var options = {
+                        ignoreCase: true,
+                        exactMatch: false,
+                        revealResults: true
+                    };
+                    var results = $resultTree.treeview('search', [pattern, options]);
+                }
+                $('#result-input-search').on('keyup', search);
+                $.hideLoading();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+            }
+        });
+
+    }
+
+
+    function updateTreegrid() {
+        $.showLoading({
+            name: 'circle-fade' //circle-fade, line-pulse, jump-pulse, circle-turn, circle-turn-scale, circle-fade, square-flip, line-scale
+        });
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("Result", "ChatGroup")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                data: { currentrecord: '' + recordid + '' },
+                success: function (myTree) {
+
+                    $defaultTree = $('#default-tree').treeview({
+                        data: myTree,
+                        onNodeChecked: function (event, node) {
+                            for (var i in node.nodes) {
+                                if (node.nodes.hasOwnProperty(i)) {
+                                    var child = node.nodes[i];
+                                    $(this).treeview(true).checkNode(child.nodeId, { slient: true });
+                                }
+                            }
+                        },
+
+                        onNodeUnchecked: function (event, node) {
+                            for (var i in node.nodes) {
+                                if (node.nodes.hasOwnProperty(i)) {
+                                    var child = node.nodes[i];
+                                    $(this).treeview(true).uncheckNode(child.nodeId);
+                                }
+                            }
+                        },
+                        levels: 3,
+                        expandIcon: 'glyphicon glyphicon-plus',
+                        collapseIcon: 'glyphicon glyphicon-minus',
+                        emptyIcon: 'glyphicon',
+                        nodeIcon: '',
+                        selectedIcon: '',
+                        //checkedIcon: 'glyphicon glyphicon-check',
+                        checkedIcon: 'fa fa-check-square-o fa-2x extra-margin',
+                        //uncheckedIcon: 'glyphicon glyphicon-unchecked',
+                        uncheckedIcon: 'fa fa-square-o fa-2x extra-margin-unchecked',
+                        color: '#000000',
+                        backColor: '#FFFFFF',
+                        borderColor: '#dddddd',
+                        onhoverColor: '#F5F5F5',
+                        selectedColor: '#FFFFFF',
+                        selectedBackColor: '#428bca',
+                        searchResultColor: '#FFFFFF',
+                        searchResultBackColor: '#a94442',
+                        enableLinks: false,
+                        highlightSelected: false,
+                        highlightSearchResults: true,
+                        showBorder: true,
+                        showIcon: true,
+                        showCheckbox: true,
+                        showTags: true,
+                        multiSelect: true
+
+                    });
+
+                    performRefresh();
+
+                    var search = function (e) {
+                        var pattern = $('#input-search').val();
+                        var options = {
+                            ignoreCase: true,
+                            exactMatch: false,
+                            revealResults: true
+                        };
+                        var results = $defaultTree.treeview('search', [pattern, options]);
+                    }
+                    var selectAll = function (e) {
+                        $defaultTree.treeview('checkAll', { silent: true });
+                        performRefresh();
+                    }
+                    var deSelectAll = function (e) {
+                        $defaultTree.treeview('uncheckAll', { silent: true });
+                        performRefresh();
+                    }
+                    $('#SelectAll').on('click', selectAll);
+                    $('#deSelectAll').on('click', deSelectAll);
+
+                    $('#input-search').on('keyup', search);
+                    $('#updateSelections').on('click', performRefresh);
+
+                    //$.hideLoading();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    }
+
+
+    var notes;
+
+    function callnotify(message, type) {
+        var msgtype = "success";
+        switch (type) {
+            case 1:
+                msgtype = "success";
+                break;
+            case 2:
+                msgtype = "info";
+                break;
+            case 3:
+                msgtype = "warning";
+                break;
+            case 4:
+                msgtype = "danger";
+                break;
+            default:
+                msgtype = "success";
+                break;
+        }
+
+        notes.show(message, {
+            // 'success', 'info', 'warning', 'danger'
+            type: '' + msgtype + ''
+        });
+    }
+
+
+    var _zipId;
+
+    var form;
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        notes = $('#notes').notify({
+            type: 'notes',
+            sticky: true,
+            delay: 3000,
+            removeIcon: '<i class="fa fa-remove"></i>'
+        });
+        bindatatables();
+        bindValidatidations();
+
+
+    });
+
+    function bindValidatidations() {
+        form = $("#GroupForm").validate({
+            debug: true,
+            rules: {
+                GroupName: {
+                    required: true,
+                    minlength: 3,
+
+                    remote:
+                    {
+                        url: '@Url.Action("CheckIfValidGroupName", "ChatGroup")',
+                            type: "post",
+                            data:
+                            {
+                                group: function () {
+                                    return $("#txtGroupName").val() + '||||' + recordid;
+                                }
+                            }
+                        }
+                    },
+                    messages: {
+                        GroupName: {
+                            required: "Group Name Field Is Required!",
+                            minlength: "At Least 3 Characters Required!"
+                        }
+                    }
+                }
+            });
+        }
+
+
+        function bindatatables() {
+            $('#Grouptable').dataTable({
+                destroy: true,
+                "columns": [
+                    {
+                        "data": "GroupURL",
+                        render: function (data, type, row) {
+                            var res = data;
+                            if (res != null) {
+                                return "<img src=\"@Url.Content(@UploadDirectory)/" + res + "\"" + "class=\"img-circle\" title=\"Profile Picture\" style=\"width:50px;\">";
+                            }
+                            else {
+                                return '<img src= "@Url.Content(@img)" class="img-circle" style="width:50px;">';
+                            }
+                        }
+                    },
+                    {
+                        "data": "GroupName"
+                    },
+                    {
+                        "data": "IsActive",
+                        render: function (data, type, row) {
+                            var res = data;
+                            var activestring = "";
+                            var activestringstatus = "";
+                            var inactivestring = "";
+                            var inactivestringstatus = "";
+                            if (res) {
+                                activestringstatus = "active";
+                                activestring = "checked=\"checked\"";
+                            } else {
+                                inactivestringstatus = "active";
+                                inactivestring = "checked=\"checked\"";
+                            }
+                            var rendereddata = "<div class=\"btn-group\" id=\"status\" data-toggle=\"buttons\"><label class=\"btn btn-default btn-on-3 btn-sm " + activestringstatus + "\"><input type=\"radio\" value=\"1\" name=\"multifeatured_module[module_id][status]\" " + activestring + ">Active</label><label class=\"btn btn-default btn-off-3 btn-sm " + inactivestringstatus + "\"><input type=\"radio\" value=\"0\" name=\"multifeatured_module[module_id][status]\" " + inactivestring + ">Inactive</label></div>";
+                            return rendereddata;
+                        }
+                    },
+                    {
+                        data: "CreatedDate",
+                        render: function (data, type, row) {
+                            var res = data;
+
+
+                            if (res != null) {
+                                res = res.replace("/Date(", "").replace(")/", "");
+                                var d = new Date(parseInt(res));
+
+                                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + getHours12(d.getHours()) + ':' + TostringForDate(d.getMinutes()) + " " + getMeridiem(d.getHours());
+                            }
+                            return res;
+                        }
+
+                    },
+                    {
+                        data: "GroupId",
+                        render: function (data, type, row) {
+                            var res = data;
+                            return res =
+                                "<p align=\"center\">" +
+                                "<a href=\"#\">" +
+                                "<img src=\"@Url.Content("~/styles/imgs/view.png")\" title=\"View\" width=\"25\" height=\"25\" border=\"0\" style=\"margin-right:5px\" id=\"btnView_" + res + "\" onclick=\"RecoredEdit(" + res + ",1)\" > " +
+                            "<img src=\"@Url.Content("~/styles/imgs/edit.png")\" title=\"Edit\" width=\"20\" height=\"20\" border=\"0\" style=\"margin-right:5px\" id=\"btnEdit_" + res + "\" onclick=\"RecoredEdit(" + res + ",2)\" > " +
+                            "<img src=\"@Url.Content("~/styles/imgs/delete.png")\" title=\"Delete\" width=\"20\" height=\"20\" border=\"0\" id=\"btnDelete_" + res + "\" onclick=\"RecordDelete(" + res + ")\">" +
+                            "</a>" +
+                            "</p>";
+                    }
+                }
+            ],
+            sAjaxSource: '@Url.Action("GroupInfoList", "ChatGroup")',
+            "columnDefs": [
+                { "className": "dt-left datatable-cellvalign", "targets": [1] },
+                { "className": "dt-center datatable-cellvalign", "targets": [0, 3, 4, 2] },
+                { "className": "datatable-cellvalign", "targets": "_all" }
+            ]
+
+        });
+    }
+
+    function TostringForDate(value) {
+        var test = "" + value;
+        if (test.length == 1) return "0".concat(test);
+        return test;
+    }
+
+    function getHours12(value) {
+        return TostringForDate((value + 11) % 12 + 1); // edited.
+    }
+
+
+    function getMeridiem(value) {
+        return value > 12 ? 'PM' : 'AM';
+    }
+
+    function CreateNewRecord() {
+        ShowHideEdit(false);
+        ShowHideList(true);
+        UpdateFields(null);
+        $("Form :input").prop("disabled", false);
+        updateTreegrid();
+        recordid = 0;
+    }
+
+    function UpdateFields(group) {
+        if (group != null) {
+
+            $("#txtGroupName").val(group.GroupName);
+            $("#txtAboutGroup").val(group.Notes);
+            $('#chkIsActive').val(group.IsActive);
+        } else {
+            $("#sp1").html("Create New");
+            $('#txtGroupName').val("");
+            $("#txtAboutGroup").val("");
+            $('#chkIsActive').val("");
+        }
+    }
+
+
+    var recordid = 0;
+
+    function RecoredEdit(id, pg) {
+
+        if (id != 0 && pg == 1) {
+            $("#sp1").html("View");
+        } else if (id != 0 && pg == 2) {
+            $("#sp1").html("Edit");
+        }
+
+        recordid = id;
+        ShowHideEdit(false);
+        ShowHideList(true);
+
+        updateTreegrid();
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("GetMatchingGroup", "ChatGroup")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                data: { selectedgroup: '' + id + '' },
+                datatype: "json",
+                success: function (group) {
+                    UpdateFields(group);
+                    $("Form :input").prop("disabled", false);
+                    if (pg == "1") {
+
+                        $("Form :input").prop("disabled", true);
+                        $("#btnCancel").prop("disabled", false);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    }
+
+    function RecordDelete(id) {
+        if (confirm("Are you sure want to delete this Record?")) {
+            $(function () {
+                $.ajax({
+                    url: '@Url.Action("DeleteSingleGroupRecord", "ChatGroup")',
+                    type: "Get",
+                    contentType: "application/json; charset=utf-8",
+                    data: { selectedgroup: '' + id + '' },
+                    datatype: "json",
+                    success: function (facility) {
+                        callnotify("Record is Deleted Sucessfully", 3);
+                        bindatatables();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        callnotify("Record is Not Deleted", 4);
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        $('#EditRow').hide();
+    });
+
+    function ShowHideEdit(hide) {
+        if (hide) $('#EditRow').hide();
+        else $('#EditRow').show();
+    }
+
+    function ShowHideList(hide) {
+        if (hide) $('#ListRow').hide();
+        else $('#ListRow').show();
+    }
+
+    function appendChars(value, desiredlength, requiredchar) {
+        if (value == null) return value;
+        if ((value + "").length >= desiredlength) return value;
+        var missing = desiredlength - (value + "").length;
+        var res = requiredchar;
+        for (var i = 0; i < missing - 1; i++) {
+            res += requiredchar;
+        }
+        return res + value;
+    }
+
+
+    function cancelClicked() {
+        form.resetForm();
+        ShowHideEdit(true);
+        ShowHideList(false);
+        recordid = 0;
+    }
+
+    function submitClicked() {
+        if ($("#GroupForm").valid()) {
+            if ($resultTree != null) {
+                var ress1 = [];
+                var nodeid = 0;
+                var found = false;
+                var node = undefined;
+                do {
+                    node = $resultTree.treeview('getNode', nodeid);
+                    nodeid++;
+                    ress1.push(node);
+                    if (node.nodeId != undefined && parseInt(node.domainid) === 1) {
+                        found = true;
+                    }
+                } while (node.nodeId !== undefined && !found);
+                var arr1 = [];
+                for (var j = 0; j < ress1.length; j++) {
+                    var res1 = {};
+                    if (ress1[j].nodetype === 0) {
+                        res1.value = ress1[j].value;
+                        res1.text = ress1[j].text;
+                        res1.parent = ress1[j].parent;
+                        arr1.push(res1);
+                    }
+                }
+                var json1 = JSON.stringify(arr1);
+
+                var groupmodel = {
+                    GroupId: recordid,
+                    UserSelections: json1,
+                    GroupName: $("#txtGroupName").val(),
+                    GroupType: "1",
+                    IsActive: $('#chkIsActive').prop('checked')
+                };
+
+                $(function () {
+                    $.ajax({
+                        url: '@Url.Action("UpdateChatGroup", "ChatGroup")',
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(groupmodel),
+                        datatype: "json",
+                        async: true,
+                        processData: false,
+                        cache: false,
+                        success: function (response) {
+
+                            if (groupmodel.GroupId == 0)
+                                callnotify("New Record Saved Sucessfully", 1);
+                            else
+                                callnotify("Record Is Updated Sucessfully", 2);
+                            bindatatables();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            callnotify("Record Saving Failed", 4);
+                            alert(xhr.responseText);
+                        }
+                    });
+                });
+                ShowHideEdit(true);
+                ShowHideList(false);
+                recordid = 0;
+            }
+        }
+    }
+    </script>
+}

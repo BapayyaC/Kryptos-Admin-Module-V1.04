@@ -864,6 +864,7 @@ namespace Kryptos.Controllers
             KPTY_USER_FORGOT_PASS_OTP_REQ_TBL info = new KPTY_USER_FORGOT_PASS_OTP_REQ_TBL();
             UserRegitrationForInitialLogin IntialLogin = new UserRegitrationForInitialLogin();
 
+            Session["OTPCount"] = 0;
             var OTP = GenerateOTP(4);
             try
             {

@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "OrganizationExportList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row" id="EditRow">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <a href="#">Manage Organization </a> &gt; Organization Export 
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="content">
+                                            <div class="row">
+                                                <div id="notes" class="col-md-2"></div>
+                                            </div>
+                                            <form class="login-form" id="GroupExportForm" method="post">
+                                                <div class="col-md-12">
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Status </label>
+                                                                <a href="#" data-toggle="tooltip" title="Select Status" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <select class="form-control" id="ddlStatus" name="Organization">
+                                                                        <option value="0">All</option>
+                                                                        <option value="1">Active</option>
+                                                                        <option value="2">InActive</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">File Type</label>
+                                                                <a href="#" data-toggle="tooltip" title="Select File Type" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <select class="form-control" id="ddlFileType" name="FileType">
+                                                                        <option value="0">Excel</option>
+                                                                        <option value="1">Pdf</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="anchor" style="padding-left:20px" id="anchor_Holder">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 input-icon text-right">
+                                                            <button type="button" id="btnExport" class="btn btn-primary">Export</button>
+                                                            <button type="button" id="btnCancel" class="btn btn-default" style="margin-right: 5px;">Cancel</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Bottom{
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+           // fillorganizations();
+        });
+
+
+        $("#ddlFileType").change(function () {
+            HideAnchortag();
+        });
+        $("#ddlStatus").change(function () {
+            HideAnchortag();
+        });
+
+        $("#btnExport").click(function () {
+
+            $.showLoading({
+                name: 'circle-fade'
+            });
+
+            var type = $("#ddlFileType").val();
+            var status = $("#ddlStatus").val();
+            $.ajax({
+                url: '@Url.Action("GenerateReport", "Organisation")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                data: {selectedtype: '' + type + '', selectedstatus: '' + status + '' },
+                datatype: "json",
+                success: function (result) {
+
+                    $.hideLoading();
+                    $("#anchor_Holder").empty().append("<a id=\"fileDownload\" target=\"_blank\" href=\"" + "../DownloadHandler.ashx?fileName=" + result + "\"> Click Here!</a>");
+                    $("#fileDownload").on("click", function () {
+                        HideAnchortag();
+                        callnotify("File Is Downloaded Successfully", 3);
+                    });
+                   
+                }
+            })
+
+        });
+
+
+        function HideAnchortag() {
+            $("#fileDownload").empty();
+        }
+
+        var notes;
+
+        function callnotify(message, type) {
+            var msgtype = "success";
+            switch (type) {
+                case 1:
+                    msgtype = "success";
+                    break;
+                case 2:
+                    msgtype = "info";
+                    break;
+                case 3:
+                    msgtype = "warning";
+                    break;
+                case 4:
+                    msgtype = "danger";
+                    break;
+                default:
+                    msgtype = "success";
+                    break;
+            }
+
+            notes.show(message, {
+                // 'success', 'info', 'warning', 'danger'
+                type: '' + msgtype + ''
+            });
+        }
+
+
+
+        $("#btnCancel").click(function () {
+
+            $("#ddlStatus").val("0");
+            $("#ddlFileType").val("0");
+             HideAnchortag();
+
+        });
+
+    </script>
+}

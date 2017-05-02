@@ -1,0 +1,1007 @@
+﻿@using Kryptos.Models
+@model IEnumerable<Kryptos.Models.Organisation>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row" id="ListRow">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <a href="#">Manage Organization </a> > Organization List
+                                    @{
+                                    UserLoginInformation activeuserrole = (UserLoginInformation)ViewData["CURRENTUSER"];
+                                    if(@activeuserrole.IsSuperAdmin)
+                                    {
+                                        <button type="button" id="btnCreate" class="btn btn-warning pull-right" style="padding: 2px; margin-top: -3px;" onclick="CreateNewRecord()" style="margin:10px;">Create New Organization</button>
+                                    }
+                                    }
+                                    </div>
+                                        <div class="panel-body">
+                                            <div class="row" style="padding-left: 15px; padding-right: 15px; ">
+
+                                                <div class="row" style="padding-left: 15px; padding-right: 15px; ">
+                                                    <table class="table table-bordered" id="Orgnizationtable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Organization Name</th>
+                                                                <!-- <th width="200px" class="datatable-headerrow">Main Organization</th>-->
+                                                                <th width="100px" class="datatable-headerrow">Contact No. </th>
+                                                                <th width="200px">Website</th>
+                                                                <th>Email</th>
+                                                                <th width="120px" class="datatable-headerrow">Created Date</th>
+                                                                <th width="80px" class="datatable-headerrow">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                                        <div class="row">
+                                            <div id="notes"></div>
+                                        </div>
+
+                                        <div class="row" id="EditRow">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading"><a href="#" onclick="cancelClicked();">Manage Organization</a> &gt; <span id="sp1"></span> Organization</div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="content">
+                                                                <form class="login-form" id="OrganizationForm" method="post">
+                                                                    <div class="col-md-12">
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9" id="lblOrganizationName">Organization Name <span class="compulsory">*</span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="Enter Organization Name" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtOrganizationName" name="OrganizationName">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9">Address <span class="compulsory"></span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="Enter Address of organization" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtAddress" name="Address">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9">Contact No<span class="compulsory">*</span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="Enter Contact No" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtContactNo" name="Phone">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9">Contact Person <span class="compulsory"></span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="Enter Contact Person Name" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtContactPerson" name="ContactPerson">
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9">About Organization <span class="compulsory"></span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="Enter Description About Organization" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <textarea rows="5" class="form-control placeholder-no-fix" placeholder="" id="txtAboutOrganization" name="AboutOrgnization"></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9">Zip Code <span class="compulsory">*</span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="Select Zip Code" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtZipCode" name="ZipCode">
+                                                                                    </div>
+                                                                                </div>
+
+
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9">City <span class="compulsory"></span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="City Name Populated Automatically based on Zipcode" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtCity" readonly="readonly" name="City">
+
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9" id="lblContactNumber">State <span class="compulsory"></span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="State Name Populated Automatically based on Zipcode" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtState" readonly="readonly" name="State">
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label visible-ie8 visible-ie9" id="lblContactNumber">Country <span class="compulsory"></span></label>
+                                                                                    <a href="#" data-toggle="tooltip" title="Country  Name Populated Automatically based on Zipcode" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                    <div class="input-icon">
+                                                                                        <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtCountry" readonly="readonly" name="Country">
+                                                                                    </div>
+                                                                                </div>
+
+
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+
+                                                                            <div class="form-group">
+                                                                                <label class="control-label visible-ie8 visible-ie9">Fax <span class="compulsory"></span></label>
+                                                                                <a href="#" data-toggle="tooltip" title="Enter Fax No" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                <div class="input-icon">
+                                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtFax" name="Fax">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label class="control-label visible-ie8 visible-ie9">Email <span class="compulsory">*</span></label>
+                                                                                <a href="#" data-toggle="tooltip" title="Enter Organization Email Id" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                <div class="input-icon">
+                                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtEmail" name="Email">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label class="control-label visible-ie8 visible-ie9">Website <span class="compulsory"></span></label>
+                                                                                <a href="#" data-toggle="tooltip" title="Enter Organization Website" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                <div class="input-icon">
+                                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtWebsite" name="Website">
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="col-md-8" id="usersTreeListHolder">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label visible-ie8 visible-ie9">Organization Admins <span class="compulsory"></span></label>
+                                                                                <a href="#" data-toggle="tooltip" title="Select Organization Admins" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-5">
+                                                                                        <label class="control-label visible-ie8 visible-ie9" style="vertical-align:middle;">Admins Selection <span class="compulsory"></span></label>
+                                                                                        <br />
+                                                                                        <div class="" style="border:1px solid black;">
+                                                                                            <input type="text" class="form-control" id="input-search" name="SourceTreeviewSearch" placeholder="Type to search..." value="">
+
+                                                                                            <div id="default-tree" style="height: 400px; overflow: scroll;"></div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-2 vcenter" style="height: 400px;">
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-12 padding-10">
+                                                                                                <a href="#" id="updateSelections" class="btn btn-block btn-sm btn-info">Update List <span class="glyphicon glyphicon-refresh"></span></a>
+                                                                                            </div>
+                                                                                            <div class="col-md-12 padding-10">
+                                                                                                <a href="#" id="SelectAll" class="btn btn-block btn-sm btn-success">Select All <span class="glyphicon glyphicon-ok"></span></a>
+                                                                                            </div>
+                                                                                            <div class="col-md-12 padding-10">
+                                                                                                <a href="#" id="deSelectAll" class="btn btn-block btn-sm btn-danger">De-Select All <span class="glyphicon glyphicon-remove"></span></a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <label class="control-label visible-ie8 visible-ie9" style="vertical-align:middle;">Selected Admins <span class="compulsory"></span></label>
+                                                                                        <br />
+                                                                                        <div class="" style="border:1px solid black;">
+                                                                                            <input type="text" class="form-control" id="result-input-search" name="DestinationTreeviewSearch" placeholder="Type to search..." />
+
+                                                                                            <div id="result-tree" style="height: 400px; overflow: scroll;"></div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-12 input-icon text-right">
+                                                                            <button type="button" id="btnCancel" class="btn btn-default" style="margin-right: 5px;" onclick="cancelClicked()">Cancel</button>
+                                                                            <button type="button" id="btnSubmit" class="btn btn-primary" onclick="submitClicked()">Submit</button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @section Bottom{
+                        <script type="text/javascript">
+
+                            var notes;
+
+                            function callnotify(message, type) {
+                                var msgtype = "success";
+                                switch (type) {
+                                    case 1:
+                                        msgtype = "success";
+                                        break;
+                                    case 2:
+                                        msgtype = "info";
+                                        break;
+                                    case 3:
+                                        msgtype = "warning";
+                                        break;
+                                    case 4:
+                                        msgtype = "danger";
+                                        break;
+                                    default:
+                                        msgtype = "success";
+                                        break;
+                                }
+
+                                notes.show(message, {
+                                    // 'success', 'info', 'warning', 'danger'
+                                    type: '' + msgtype + ''
+                                });
+                            }
+
+                            var $defaultTree;
+                            var $resultTree;
+
+                            function performRefresh() {
+                                $.showLoading({
+                                    name: 'circle-fade'
+                                });
+                                var ress = $defaultTree.treeview("getChecked");
+                                var arr = [];
+                                for (var i = 0; i < ress.length; i++) {
+                                    var res = {};
+                                    if (ress[i].nodetype === 0) {
+                                        res.value = ress[i].value;
+                                        res.text = ress[i].text;
+                                        res.parent = ress[i].parent;
+                                        arr.push(res);
+                                    }
+                                }
+                                var json = JSON.stringify(arr);
+                                $.ajax({
+                                    url: '@Url.Action("SubResults", "ChatGroup")',
+                                    type: "Get",
+                                    data: { selections: '' + json + '', currentrecord: '' + recordid + '' },
+                                    contentType: "application/json; charset=utf-8",
+                                    datatype: "json",
+                                    traditional: true,
+                                    success: function (result_myTree) {
+                                        $resultTree = $('#result-tree').treeview({
+                                            data: result_myTree,
+                                            levels: 3,
+                                            expandIcon: 'glyphicon glyphicon-plus',
+                                            collapseIcon: 'glyphicon glyphicon-minus',
+                                            emptyIcon: 'glyphicon',
+                                            nodeIcon: "glyphicon glyphicon-user",
+                                            selectedIcon: '',
+                                            //checkedIcon: 'glyphicon glyphicon-check',
+                                            checkedIcon: 'fa fa-check-square-o fa-2x extra-margin',
+                                            //uncheckedIcon: 'glyphicon glyphicon-unchecked',
+                                            uncheckedIcon: 'fa fa-square-o fa-2x extra-margin',
+                                            color: '#000000',
+                                            backColor: '#FFFFFF',
+                                            borderColor: '#dddddd',
+                                            onhoverColor: '#F5F5F5',
+                                            selectedColor: '#FFFFFF',
+                                            selectedBackColor: '#428bca',
+                                            searchResultColor: '#FFFFFF',
+                                            searchResultBackColor: '#a94442',
+                                            highlightSelected: false,
+                                            highlightSearchResults: true,
+                                            showBorder: true
+                                        });
+                                        var search = function (e) {
+                                            var pattern = $('#result-input-search').val();
+                                            var options = {
+                                                ignoreCase: true,
+                                                exactMatch: false,
+                                                revealResults: true
+                                            };
+                                            var results = $resultTree.treeview('search', [pattern, options]);
+                                        }
+                                        $('#result-input-search').on('keyup', search);
+                                        $.hideLoading();
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        alert(xhr.responseText);
+                                    }
+                                });
+
+                            }
+
+                            function resetTreegrid() {
+                                $('#usersTreeListHolder').hide();
+                                $('#default-tree').empty();
+                                $('#result - tree').empty();
+                            }
+
+                            function updateTreegrid() {
+                                $('#usersTreeListHolder').show();
+                                $.showLoading({
+                                    name: 'circle-fade' //circle-fade, line-pulse, jump-pulse, circle-turn, circle-turn-scale, circle-fade, square-flip, line-scale
+                                });
+
+                                $(function () {
+                                    $.ajax({
+                                        url: '@Url.Action("Result", "Organisation")',
+                                        type: "Get",
+                                        contentType: "application/json; charset=utf-8",
+                                        datatype: "json",
+                                        data: { currentrecord: '' + recordid + '' },
+                                        success: function (myTree) {
+
+                                            $defaultTree = $('#default-tree').treeview({
+                                                data: myTree,
+                                                onNodeChecked: function (event, node) {
+                                                    for (var i in node.nodes) {
+                                                        if (node.nodes.hasOwnProperty(i)) {
+                                                            var child = node.nodes[i];
+                                                            $(this).treeview(true).checkNode(child.nodeId, { slient: true });
+                                                        }
+                                                    }
+                                                },
+
+                                                onNodeUnchecked: function (event, node) {
+                                                    for (var i in node.nodes) {
+                                                        if (node.nodes.hasOwnProperty(i)) {
+                                                            var child = node.nodes[i];
+                                                            $(this).treeview(true).uncheckNode(child.nodeId);
+                                                        }
+                                                    }
+                                                },
+                                                levels: 3,
+                                                expandIcon: 'glyphicon glyphicon-plus',
+                                                collapseIcon: 'glyphicon glyphicon-minus',
+                                                emptyIcon: 'glyphicon',
+                                                nodeIcon: '',
+                                                selectedIcon: '',
+                                                //checkedIcon: 'glyphicon glyphicon-check',
+                                                checkedIcon: 'fa fa-check-square-o fa-2x extra-margin',
+                                                //uncheckedIcon: 'glyphicon glyphicon-unchecked',
+                                                uncheckedIcon: 'fa fa-square-o fa-2x extra-margin-unchecked',
+                                                color: '#000000',
+                                                backColor: '#FFFFFF',
+                                                borderColor: '#dddddd',
+                                                onhoverColor: '#F5F5F5',
+                                                selectedColor: '#FFFFFF',
+                                                selectedBackColor: '#428bca',
+                                                searchResultColor: '#FFFFFF',
+                                                searchResultBackColor: '#a94442',
+                                                enableLinks: false,
+                                                highlightSelected: false,
+                                                highlightSearchResults: true,
+                                                showBorder: true,
+                                                showIcon: true,
+                                                showCheckbox: true,
+                                                showTags: true,
+                                                multiSelect: true
+
+                                            });
+
+                                            performRefresh();
+
+                                            var search = function (e) {
+                                                var pattern = $('#input-search').val();
+                                                var options = {
+                                                    ignoreCase: true,
+                                                    exactMatch: false,
+                                                    revealResults: true
+                                                };
+                                                var results = $defaultTree.treeview('search', [pattern, options]);
+                                            }
+                                            var selectAll = function (e) {
+                                                $defaultTree.treeview('checkAll', { silent: true });
+                                                performRefresh();
+                                            }
+                                            var deSelectAll = function (e) {
+                                                $defaultTree.treeview('uncheckAll', { silent: true });
+                                                performRefresh();
+                                            }
+                                            $('#SelectAll').on('click', selectAll);
+                                            $('#deSelectAll').on('click', deSelectAll);
+
+                                            $('#input-search').on('keyup', search);
+                                            $('#updateSelections').on('click', performRefresh);
+
+                                            //$.hideLoading();
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            alert(xhr.responseText);
+                                        }
+                                    });
+                                });
+                            }
+
+
+                            var form;
+                            $(document).ready(function () {
+                                $('[data-toggle="tooltip"]').tooltip();
+
+
+                                notes = $('#notes').notify({
+                                    type: 'notes',
+                                    sticky: true,
+                                    delay: 3000,
+                                    removeIcon: '<i class="fa fa-remove"></i>'
+                                });
+                                bindatatables();
+                                fillOrganizations();
+                                initializeZipCode();
+                                bindValidatidations();
+
+
+                            });
+
+                            function bindValidatidations() {
+                                form = $("#OrganizationForm").validate({
+                                    debug: true,
+                                    rules: {
+                                        OrganizationName: {
+                                            required: true,
+                                            minlength: 3,
+                                            remote:
+                                           {
+                                               url: '@Url.Action("CheckIfValidOrganizationName", "Organisation")',
+                                               type: "post",
+                                               data:
+                                               {
+                                                   org: function () {
+                                                       return $("#txtOrganizationName").val() + '||||' + recordid;
+                                                   }
+                                               }
+                                           }
+                                        },
+
+                                        Email: {
+                                            required: true,
+                                            email: true,
+                                            remote:
+                                            {
+                                                url: '@Url.Action("CheckIfValidEmail", "Organisation")',
+                                                type: "post",
+                                                data:
+                                                {
+                                                    email2: function () {
+                                                        return $("#txtEmail").val() + '||||' + recordid;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        Phone: {
+                                            required: true,
+                                            pattern: /^[0-9]{8,14}$/,
+                                            remote: {
+                                                url: '@Url.Action("CheckIfValidContactNumber", "Organisation")',
+                                                type: "post",
+                                                data:
+                                                {
+                                                    phonenumber: function () {
+                                                        return $("#txtContactNo").val() + '||||' + recordid;
+                                                    }
+                                                }
+                                            }
+                                        },
+
+
+                                        //ContactNo: {
+                                        //    required: true,
+                                        //    pattern: /^[0-9]{8,14}$/
+                                        //},
+                                        //AboutOrgnization: {
+                                        //    required: true
+                                        //},
+                                        ZipCode:
+                                        {
+                                            required: true,
+                                            zipcode: true,
+                                            remote: {
+                                                url: '@Url.Action("checkifvalidZipcode", "UserDatatables")',
+                                                type: "post",
+                                                delay: 3000,
+                                                data:
+                                                {
+                                                    zipcode: function () {
+                                                        return $("#txtZipCode").val();
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        messages: {
+                                            OrganizationName: {
+                                                required: "First Name Field Is Required!",
+                                                minlength: "At Least 3 Characters Required!"
+                                            },
+                                            ContactNo: {
+                                                required: "Contact Number is Required!",
+                                                pattern: "Contact Number is not valid, please check!"
+                                            },
+                                            //AboutOrgnization:
+                                            //    {
+                                            //        required: "About User Field is Required!"
+                                            //    },
+                                            ZipCode: {
+                                                required: "ZipCode is Required!",
+                                                pattern: "Enter Numbers Only"
+
+                                            }
+
+                                        }
+                                    }
+                                });
+                            }
+
+                            function appendChars(value, desiredlength, requiredchar) {
+                                if (value == null) return value;
+                                if ((value + "").length >= desiredlength) return value;
+                                var missing = desiredlength - (value + "").length;
+                                var res = requiredchar;
+                                for (var i = 0; i < missing - 1; i++) {
+                                    res += requiredchar;
+                                }
+                                return res + value;
+                            }
+
+                            function initializeZipCode() {
+                                $("#txtZipCode").autocomplete({
+                                    minLength: 3,
+                                    source: function (request, response) {
+                                        $.ajax({
+                                            url: '@Url.Action("GetMatchingZipCodeResult", "Organisation")',
+                                            data: "{ 'prefix': '" + request.term + "'}",
+                                            dataType: "json",
+                                            type: "POST",
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (data) {
+                                                response($.map(data, function (item) {
+                                                    return {
+                                                        val: item.split('-')[0],
+                                                        label: item.split('-')[1] + " - " + item.split('-')[2] + " - " + item.split('-')[3] + " - " + item.split('-')[4],
+                                                        label2: item.split('-')[1],
+                                                        country: item.split('-')[2],
+                                                        state: item.split('-')[3],
+                                                        value: item.split('-')[1],
+                                                        city: item.split('-')[4]
+                                                    }
+                                                }))
+                                            },
+                                            error: function (response) {
+                                                alert(response.responseText);
+                                            },
+                                            failure: function (response) {
+                                                alert(response.responseText);
+                                            }
+                                        });
+                                    },
+                                    select: function (e, i) {
+                                        _zipId = i.item.val;
+                                        $("#txtZipCode").val(i.item.label2);
+                                        $("#txtCountry").val(i.item.country)
+                                        $("#txtState").val(i.item.state)
+                                        $("#txtCity").val(i.item.city)
+                                    },
+                                });
+                            }
+
+
+                            function bindatatables() {
+                                $('#Orgnizationtable').dataTable({
+                                    destroy: true,
+                                    "columns": [
+                                        {
+                                            "data": "Name",
+
+                                        },
+
+                                        //{
+                                        //    "data": "MainOrganisationName",
+                                        //    render: function (data, type, row) {
+                                        //        if (data != null) {
+                                        //            return data;
+                                        //        }
+                                        //        return "";
+                                        //    }
+                                        //},
+                                        {
+                                            "data": "Phone",
+                                            render: function (data, type, row) {
+                                                var phone = data;
+                                                if (phone != null && phone.length == 10) {
+                                                    phone = phone.substr(0, 3) + '-' + phone.substr(3, 3) + '-' + phone.substr(6, 4);
+                                                    return phone;
+                                                }
+                                                return phone;
+                                            }
+                                        },
+                                        {
+                                            "data": "Website",
+
+                                        },
+                                        {
+                                            "data": "Email",
+
+
+                                        },
+                                        {
+                                            data: "CreatedDate",
+                                            render: function (data, type, row) {
+                                                var res = data;
+
+
+                                                if (res != null) {
+                                                    res = res.replace("/Date(", "").replace(")/", "");
+                                                    var d = new Date(parseInt(res));
+
+                                                    return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + getHours12(d.getHours()) + ':' + TostringForDate(d.getMinutes()) + " " + getMeridiem(d.getHours());
+                                                }
+                                                return res;
+                                            }
+
+                                        },
+                                        {
+                                            data: "OrganisationId",
+                                            render: function (data, type, row) {
+                                                var res = data;
+                                                @{
+                             UserLoginInformation activeuser = (UserLoginInformation)ViewData["CURRENTUSER"];
+                             }
+                                                var include = false;
+
+                                                var CurrentOrganisationId = "@activeuser.Facility.OrganisationId";
+                                                var IsSuperAdmin_js = "@activeuser.IsSuperAdmin";
+                                                var IsOrgAdmin_js = "@activeuser.IsOrganisationAdmin";
+                                                var IsFacAdmin_js = "@activeuser.IsFacilityAdmin";
+
+                                                if (row.OrganisationId == CurrentOrganisationId) {
+                                                    include = true;
+                                                }
+
+
+                                                var ViewImageString = "<img src=\"@Url.Content("~/styles/imgs/view.png")\" title=\"View\" width=\"25\" height=\"25\" border=\"0\" style=\"margin-right:5px\" id=\"btnView_" + res + "\" onclick=\"RecoredEdit(" + res + ",1)\" > ";
+                                                var EditImageString = "<img src=\"@Url.Content("~/styles/imgs/edit.png")\" title=\"Edit\" width=\"20\" height=\"20\" border=\"0\" style=\"margin-right:5px\" id=\"btnEdit_" + res + "\" onclick=\"RecoredEdit(" + res + ",2)\" > ";
+                                                var DeleteImageString = "<img src=\"@Url.Content("~/styles/imgs/delete.png")\" title=\"Delete\" width=\"20\" height=\"20\" border=\"0\" id=\"btnDelete_" + res + "\" onclick=\"RecordDelete(" + res + ")\">";
+
+                                                if (IsSuperAdmin_js == "True" || (IsOrgAdmin_js == "True" && include)) {
+                                                    res =
+                                                     "<p align=\"center\">" +
+                                                     "<a href=\"#\">" +
+                                                     ViewImageString +
+                                                     EditImageString +
+                                                     DeleteImageString +
+                                                     "</a>" +
+                                                     "</p>";
+                                                }
+                                                else {
+                                                    res =
+                                                       "<p align=\"center\">" +
+                                                       "<a href=\"#\">" +
+                                                       ViewImageString +
+                                                       "</a>" +
+                                                       "</p>";
+                                                }
+                                                return res;
+                                            }
+                                        }
+                                    ],
+                                    sAjaxSource: '@Url.Action("OrganizationInfoList", "Organisation")',
+                                    "columnDefs": [
+                                    { "className": "dt-center datatable-cellvalign", "targets": [4, 5] },
+                                    { "className": "datatable-cellvalign", "targets": "_all" }
+                                    ]
+
+                                });
+
+                            }
+
+                            function TostringForDate(value) {
+                                var test = "" + value;
+                                if (test.length == 1) return "0".concat(test);
+                                return test;
+                            }
+
+                            function getHours12(value) {
+                                return TostringForDate((value + 11) % 12 + 1); // edited.
+                            }
+
+
+                            function getMeridiem(value) {
+                                return value > 12 ? 'PM' : 'AM';
+                            }
+
+                            function CreateNewRecord() {
+                                recordid = 0;
+                                resetTreegrid();
+                                ShowHideEdit(false);
+                                ShowHideList(true);
+                                UpdateFields(null);
+                                $("Form :input").prop("disabled", false);
+                            }
+
+                            function UpdateFields(org) {
+                                if (org != null) {
+                                    $('#txtOrganizationName').val(org.Name);
+                                    fillOrganizationsExceptSelected(org.OrganisationId, org.ParentId);
+                                    // $("#ddlParent").val(org.ParentId);
+                                    $('#txtContactNo').val(org.Phone);
+                                    $('#txtContactPerson').val(org.ContactPerson);
+                                    $('#txtAboutOrganization').val(org.Notes);
+                                    $('#txtAddress').val(org.AddressLine1);
+                                    $('#txtZipCode').val(appendChars(org.PostalCode, 5, "0"));
+                                    $('#txtCity').val(org.City);
+                                    $('#txtState').val(org.State);
+                                    $('#txtCountry').val(org.Country);
+                                    $('#txtWebsite').val(org.Website);
+                                    $('#txtEmail').val(org.Email);
+                                    $('#txtFax').val(org.Notes);
+
+                                } else {
+                                    $("#sp1").html("Create New");
+                                    $('#txtOrganizationName').val("");
+                                    // $("#ddlParent").val("0");
+                                    $('#txtContactNo').val("");
+                                    $('#txtContactPerson').val("");
+                                    $('#txtAboutOrganization').val("");
+                                    $('#txtAddress').val("");
+                                    $('#txtZipCode').val("");
+                                    $('#txtCity').val("");
+                                    $('#txtState').val("");
+                                    $('#txtCountry').val("");
+                                    $('#txtWebsite').val("");
+                                    $('#txtEmail').val("");
+                                    $('#txtFax').val("");
+                                    $('txtFacilityType').val("");
+
+
+                                }
+                            }
+
+
+                            var recordid;
+
+                            function RecoredEdit(id, pg) {
+
+                                if (id != 0 && pg == 1) {
+                                    $("#sp1").html("View");
+                                }
+                                else if (id != 0 && pg == 2) {
+                                    $("#sp1").html("Edit");
+                                }
+
+                                recordid = id;
+                                ShowHideEdit(false);
+                                ShowHideList(true);
+
+                                updateTreegrid();
+
+                                $(function () {
+                                    $.ajax({
+                                        url: '@Url.Action("getMatchingOrganization", "Organisation")',
+                                        type: "Get",
+                                        contentType: "application/json; charset=utf-8",
+                                        data: { selectedOrg: '' + id + '' },
+                                        datatype: "json",
+                                        success: function (org) {
+                                            UpdateFields(org);
+                                            $("Form :input").prop("disabled", false);
+                                            if (pg == "1") {
+                                                $("Form :input").prop("disabled", true);
+                                                $("#btnCancel").prop("disabled", false);
+                                            }
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            alert(xhr.responseText);
+                                        }
+                                    });
+                                });
+                            }
+
+
+                            function RecordDelete(id) {
+                                if (confirm("Are you sure want to delete this Record?")) {
+
+
+                                    $(function () {
+                                        $.ajax({
+                                            url: '@Url.Action("DeleteSingleOrganizationRecord", "Organisation")',
+                                            type: "Get",
+                                            contentType: "application/json; charset=utf-8",
+                                            data: { selectedorg: '' + id + '' },
+                                            datatype: "json",
+                                            success: function (org) {
+                                                if (org == "True") {
+                                                    callnotify("Record is Deleted Sucessfully", 3);
+                                                    bindatatables();
+                                                } else {
+                                                    callnotify("Record is in Used.Could Not be Deleted", 4);
+
+                                                }
+                                            },
+                                            error: function (xhr, ajaxOptions, thrownError) {
+                                                callnotify("Record is Not Deleted", 4);
+
+                                                alert(xhr.responseText);
+                                            }
+                                        });
+                                    });
+                                }
+
+                            }
+
+
+
+                            function fillOrganizations() {
+
+                                $(function () {
+                                    $.ajax({
+                                        url: '@Url.Action("GetAllOrganizations", "Organisation")',
+                                        type: "Get",
+                                        contentType: "application/json; charset=utf-8",
+                                        datatype: "json",
+                                        success: function (organizations) {
+                                            var options = "<option value=\"0\"> Please Select </option>";
+                                            for (var i = 0; i < organizations.length; i++) {
+                                                var name = organizations[i].Name;
+                                                options += "<option value=\"" + organizations[i].OrganisationId + "\">" + name + "</option>";
+                                            }
+                                            $("#ddlParent").append(options);
+                                            $("#ddlParent").val("0");
+                                        }
+                                    });
+                                });
+                            }
+
+
+                            function fillOrganizationsExceptSelected(selected, parent) {
+
+                                $(function () {
+                                    $.ajax({
+                                        url: '@Url.Action("GetAllOrganizationsExceptSelected", "Organisation")',
+                                        type: "Get",
+                                        contentType: "application/json; charset=utf-8",
+                                        data: { selectedOrg: '' + selected + '' },
+                                        datatype: "json",
+                                        success: function (organizations) {
+                                            var options = "<option value=\"0\"> Please Select </option>";
+                                            for (var i = 0; i < organizations.length; i++) {
+                                                var name = organizations[i].Name;
+                                                options += "<option value=\"" + organizations[i].OrganisationId + "\">" + name + "</option>";
+                                            }
+                                            $("#ddlParent").empty().append(options);
+                                            if (parent == null) $("#ddlParent").val("0");
+                                            else $("#ddlParent").val(parent);
+                                        }
+                                    })
+
+
+                                });
+                            }
+
+
+                            $(document).ready(function () {
+                                $('#EditRow').hide();
+                            });
+
+                            function ShowHideEdit(hide) {
+                                if (hide) $('#EditRow').hide();
+                                else $('#EditRow').show();
+                            }
+
+                            function ShowHideList(hide) {
+                                if (hide) $('#ListRow').hide();
+                                else $('#ListRow').show();
+                            }
+
+
+                            function cancelClicked() {
+                                form.resetForm();
+                                ShowHideEdit(true);
+                                ShowHideList(false);
+                            }
+
+                            var _zipId;
+
+                            function submitClicked() {
+                                if ($("#OrganizationForm").valid()) {
+                                    if ($resultTree != null) {
+                                        var ress1 = [];
+                                        var nodeid = 0;
+                                        var found = false;
+                                        var node = undefined;
+                                        do {
+                                            node = $resultTree.treeview('getNode', nodeid);
+                                            nodeid++;
+                                            ress1.push(node);
+                                            if (node.nodeId != undefined && parseInt(node.domainid) === 1) {
+                                                found = true;
+                                            }
+                                        } while (node.nodeId !== undefined && !found);
+                                        var arr1 = [];
+                                        for (var j = 0; j < ress1.length; j++) {
+                                            var res1 = {};
+                                            if (ress1[j].nodetype === 0) {
+                                                res1.value = ress1[j].value;
+                                                res1.text = ress1[j].text;
+                                                res1.parent = ress1[j].parent;
+                                                arr1.push(res1);
+                                            }
+                                        }
+                                        var json1 = JSON.stringify(arr1);
+                                    }
+                                    var orgmodel = {
+                                        OrganisationId: recordid,
+                                        Name: $("#txtOrganizationName").val(),
+                                        ParentId: $('#ddlParent').val(),
+                                        Phone: $('#txtContactNo').val(),
+                                        ContactPerson: $('#txtContactPerson').val(),
+                                        Notes: $('#txtAboutOrgnization').val(),
+                                        AddressLine1: $('#txtAddress').val(),
+                                        PostalCode: $('#txtZipCode').val(),
+                                        ZipId: _zipId,
+                                        City: $('#txtCity').val(),
+                                        State: $('#txtState').val(),
+                                        Country: $('#txtCountry').val(),
+                                        Website: $('#txtWebsite').val(),
+                                        Email: $('#txtEmail').val(),
+                                        Fax: $('#txtFax').val(),
+                                        UserSelections: json1
+                                    };
+
+                                    $(function () {
+                                        $.ajax({
+                                            url: '@Url.Action("UpdateOrganization", "Organisation")',
+                                            type: "POST",
+                                            contentType: "application/json; charset=utf-8",
+                                            data: JSON.stringify(orgmodel),
+                                            datatype: "json",
+                                            async: true,
+                                            processData: false,
+                                            cache: false,
+                                            success: function (response) {
+                                                if (orgmodel.OrganisationId == 0)
+                                                    callnotify("New Record Saved Sucessfully", 1);
+                                                else
+                                                    callnotify("Record is updated Sucessfully", 2);
+                                                bindatatables();
+                                            },
+                                            error: function (xhr, ajaxOptions, thrownError) {
+                                                callnotify("Record Saving Failed", 4);
+                                                alert(xhr.responseText);
+                                            }
+                                        });
+                                    });
+                                    recordid = 0;
+                                    ShowHideEdit(true);
+                                    ShowHideList(false);
+                                }
+                            }
+
+
+
+
+                        </script>
+                    }

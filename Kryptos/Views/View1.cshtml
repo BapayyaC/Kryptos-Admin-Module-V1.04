@@ -1,0 +1,294 @@
+﻿@{
+    ViewBag.Title = "View1";
+}
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Manage User > <b>User List</b></div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <div class="form-group">
+                                                <select class="form-control input-sm  form-control-flat">
+                                                    <option>05</option>
+                                                    <option>10</option>
+                                                    <option>20</option>
+                                                    <option>30</option>
+                                                    <option>40</option>
+                                                    <option>All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3" style="padding-left:0px;">
+                                            <p class="form-control-static">records per page</p>
+                                        </div>
+                                        <div class="col-lg-3 col-lg-offset-5">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control input-sm  form-control-flat" placeholder="Search record here...">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default btn-sm btn-flat" type="button">Go!</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table width="100%" class="table table-bordered" style="overflow-x:auto;">
+                                        <thead>
+                                            <tr>
+                                                <th width="1">#</th>
+                                                <th>User Picture </th>
+                                                <th>User Name </th>
+                                                <th>Email ID </th>
+                                                <th>Contact No. </th>
+                                                <th>Organization</th>
+                                                <th>User Role </th>
+                                                <th>Status</th>
+                                                <th>Date of Registration </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Paris Foreman</a></td>
+                                                <td>kenton@trade.org</td>
+                                                <td>199-887-7642</td>
+                                                <td>PrimEra</td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" checked="checked">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td><p>13/02/2017 11:30 AM</p>                          </td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Rachael Dodson</a></td>
+                                                <td>tricia.laverne.olive@way.com</td>
+                                                <td>306-745-6180</td>
+                                                <td>PrimEra</td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" checked="checked">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>13/02/2017 11:30 AM</td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Eliseo Peterson</a></td>
+                                                <td>carla@lightlike.edu</td>
+                                                <td>850-855-9875</td>
+                                                <td>Prime Healthecare </td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" checked="checked">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>13/02/2017 11:30 AM</td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Malissa Avila</a></td>
+                                                <td>robbie.shauna@maymeal.me</td>
+                                                <td>826-379-4452</td>
+                                                <td>Prime Healthecare </td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" checked="checked">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>13/02/2017 11:30 AM</td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Alvina Mahoney</a></td>
+                                                <td>aubrey.griselda@appleapproval.org</td>
+                                                <td>605-527-5369</td>
+                                                <td>Prime Healthecare </td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" checked="checked">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>13/02/2017 11:30 AM</td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Joan Fletcher</a></td>
+                                                <td>pierre.junior.freddy@instrument.edu</td>
+                                                <td>467-186-1793</td>
+                                                <td>Prime USA </td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" checked="checked">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>13/02/2017 11:30 AM</td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Myron Goodman</a></td>
+                                                <td>rocky.pierre.junior@feeble.org</td>
+                                                <td>170-699-4064</td>
+                                                <td>Prime USA </td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]" checked="checked">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>13/02/2017 11:30 AM</td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="cr-styled">
+                                                        <input type="checkbox" ng-model="todo.done">
+                                                        <i class="fa"></i>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center"><img src="styles/imgs/profile.jpg" class="img-circle" title="Profile Picture" style="width:50px;"></td>
+                                                <td><a href="#">Ahmad Mcbride</a></td>
+                                                <td>theresa.beverly@feather.org</td>
+                                                <td>601-690-1247</td>
+                                                <td>Prime USA </td>
+                                                <td><p align="center">Physician</p></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" id="status" data-toggle="buttons">
+                                                        <label class="btn btn-default btn-on-3 btn-sm active">
+                                                            <input type="radio" value="1" name="multifeatured_module[module_id][status]">Active
+                                                        </label>
+                                                        <label class="btn btn-default btn-off-3 btn-sm ">
+                                                            <input type="radio" value="0" name="multifeatured_module[module_id][status]" checked="checked">Inactive
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>13/02/2017 11:30 AM</td>
+                                                <td><p align="center"><a href="#"><img src="styles/imgs/edit.png" title="Edit" width="20" height="20" border="0" style="margin-right:5px" "> <img src=" styles />imgs/delete.png" title="Delete" width="20" height="20" border="0"></a></p></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="col-sm-7" align="left">
+                                        <p class="form-control-static text-center">Showing 1 to 5 of 15 entries</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="modal-table" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <span class="white">&times;</span> </button>
+                    Results for "Latest Registered Domains
+                </div>
+            </div>
+            <div class="modal-body no-padding">INSERT FORM</div>
+        </div>
+    </div>
+    <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = null;
+
+
+}
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+
+<head>
+    <meta charset="utf-8" />
+    <title>Welcome to KryptosText Admin</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="~/styles/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/css/kryptostext.min.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="~/styles/imgs/favicon.ico" />
+</head>
+
+
+
+
+<body class=" login">
+    <div class="logo"><img src="~/styles/imgs/logo.png" class="logosize" alt="" /></div>
+
+    <div class="content">
+
+        <div class="logintit">Login</div>
+        <div class="adminico "><img src="~/styles/imgs/icon1.png" class="iconsize" alt="" /></div>
+
+        <form class="login-form" action="@Url.Action("LoginCredentials", "Login")" method="post">
+            @{
+                if (TempData["errormsg"] != null)
+                {
+                    <div class="alert alert-danger display-hide" id="div1">
+                        <span>
+                            @TempData["errormsg"]
+                        </span>
+                    </div>
+                }
+            }
+
+            @{
+                if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-success display-hide">
+                        <span>
+                            @TempData["ErrorMessage"]
+                        </span>
+                    </div>
+                }
+            }
+
+
+
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">Email</label>
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="EmailId" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">Password</label>
+                <div class="input-icon">
+                    <i class="fa fa-lock"></i>
+                    <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="Password" />
+                </div>
+            </div>
+            <button class="btn blue btn-block">LOGIN</button>
+
+
+            <div class="forget-password">
+                <p><a href="javascript:;" id="forget-password">Forgot Password</a></p>
+            </div>
+
+        </form>
+
+
+
+        <form class="forget-form" action="index.html" method="post">
+            <h3>Forget Password ?</h3>
+            <p> Enter your e-mail address below to reset your password. </p>
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fa fa-envelope"></i>
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="back-btn" class="btn blue">Back </button>
+                <button type="submit" class="btn green pull-right"> Submit </button>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="copyright"> &copy; 2017 KryptosText | All rights reserved </div>
+    <script src="~/styles/js/jquery.min.js" type="text/javascript"></script>
+    <script src="~/styles/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/styles/js/js.cookie.min.js" type="text/javascript"></script>
+    <script src="~/styles/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/styles/js/app.min.js" type="text/javascript"></script>
+    @*<script src="~/styles/js/login.min.js" type="text/javascript"></script>*@
+    @*<script type="text/javascript">
+        $(document).ready(function () {
+            $("#div1").hide();
+        });
+    </script>*@
+</body>
+
+</html>

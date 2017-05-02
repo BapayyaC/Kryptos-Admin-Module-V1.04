@@ -1,0 +1,170 @@
+.login {
+	background-color: rgba(234,231,231,0.5);
+	background-image: url("../../styles/imgs/bg.png");
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+.login .logo {
+	text-align: center;
+	border-top: 5px solid #3ba4dc;
+	padding: 40px 0 100px 0px;
+}
+.login .content {
+	width: 550px;
+	margin: 0 auto;
+	padding: 20px 30px 15px;
+	background-color: #fff;
+	-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+	-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+	box-shadow: 0 2px 2px rgba(0,0,0,0.3)
+}
+.login .content h3, .login .content h4 {
+	color: #444
+}
+.login .content label, .login .content p {
+	color: #444
+}
+.login .content .forget-form, .login .content .login-form {
+	padding: 0;
+	margin-top: -130px;
+}
+.login .content .form-control {
+	background-color: #fff
+}
+.login .content .forget-form, .login .content .register-form {
+	display: none
+}
+.login .content .form-title {
+	font-weight: 300;
+	margin-bottom: 25px
+}
+.login .content .form-actions {
+	background-color: transparent;
+	clear: both;
+	border: 0;
+	padding: 0 30px 2px;
+	margin-left: -30px;
+	margin-right: -30px
+}
+.login .content .form-actions .checkbox {
+	margin-left: 0;
+	padding-left: 0;
+	margin-top: 8px;
+	display: inline-block
+}
+.login .content .forget-form .form-actions {
+	border: 0;
+	margin-bottom: 0;
+	padding-bottom: 20px
+}
+.login .content .register-form .form-actions {
+	border: 0;
+	margin-bottom: 0;
+	padding-bottom: 0
+}
+.login .content .form-actions .btn {
+	margin-top: 1px
+}
+.login .content .forget-password {
+	margin-top: 16px; text-align:center;
+}
+.login .content .create-account {
+	border-top: 1px dotted #eee;
+	padding-top: 10px;
+	margin-top: 15px
+}
+.login .content .create-account a {
+	display: inline-block;
+	margin-top: 5px
+}
+.login .content .select2-container i {
+	display: inline-block;
+	position: relative;
+	color: #ccc;
+	z-index: 1;
+	top: 1px;
+	margin: 4px 4px 0 -1px;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	text-align: center
+}
+.login .content .has-error .select2-container i {
+	color: #b94a48
+}
+.login .content .select2-container a span {
+	font-size: 13px
+}
+.login .content .select2-container a span img {
+	margin-left: 4px
+}
+.login .copyright {
+	text-align: center;
+	margin: 0 auto;
+	padding: 10px;
+	color: #444;
+	font-size: 13px
+}
+
+.btn.blue:not(.btn-outline) {
+	color: #FFF;
+	background-color: #3ba4dc;
+
+}
+.btn.blue:not(.btn-outline).focus, .btn.blue:not(.btn-outline):focus {
+	color: #FFF;
+	background-color: #217ebd;
+	border-color: #15527c
+}
+.btn.blue:not(.btn-outline).active, .btn.blue:not(.btn-outline):active, .btn.blue:not(.btn-outline):hover, .open > .btn.blue:not(.btn-outline).dropdown-toggle {
+	color: #FFF;
+	background-color: #217ebd;
+	border-color: #1f78b5
+}
+
+.input-icon {
+	position: relative;
+	left: 0
+}
+.input-icon > .form-control {
+	padding-left: 33px
+}
+.input-group .input-icon > .form-control {
+	border-radius: 4px 0 0 4px
+}
+.input-icon > i {
+	color: #ccc;
+	position: absolute;
+	margin: 11px 2px 4px 10px;
+	z-index: 3;
+	width: 16px;
+	font-size: 16px;
+	text-align: center;
+	left: 0
+}
+
+/******kanthy styles*****/
+.logintit{margin:-30px -30px 20px; background-color:#532f90; font-size:20px; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; padding:15px 25px;text-transform: uppercase;}
+a {color: #428bca; text-decoration: underline;}
+.btn{padding: 8px 12px;font-size: 18px;}
+.adminico{position: relative; top:-135px; left:185px;}
+
+
+
+
+/******kanthy styles ends*****/
+
+@media (min-width: 320px) and (max-width: 768px){
+.login {	background-color: rgba(234,231,231,0.5);background-image:none;}
+.logintit{padding: 9px 25px;font-size: 16px;}
+.iconsize{width:25%;}
+.adminico {top: -75px; left: 100px; }
+.login .content {padding: 15px; width: 280px;}
+.logintit {margin: -30px -16px 20px;}
+.login .content .forget-form, .login .content .login-form{margin-top: -73px;}
+
+.login .logo {height: 138px!important; padding: 16px 0 100px 0px;}
+}
+
+
+

@@ -1,0 +1,1231 @@
+﻿@using Kryptos.Models
+@model IEnumerable<Kryptos.Models.FacilityMaster>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+@{
+    string current = ViewData["current grid"] as string;
+    var datagridview = "";
+    var treegridview = "";
+
+    if (current == "")
+    {
+        datagridview = "active";
+    }
+
+
+}
+
+
+
+<div class="page-container">
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="portlet box blue">
+                    <div class="row" id="ListRow">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <a href="#">Manage Facility </a> > Facility List
+                                    @{
+                                    UserLoginInformation activeuserrole = (UserLoginInformation)ViewData["CURRENTUSER"];
+                                    if(@activeuserrole.IsSuperAdmin)
+                                    {
+                                    <button type="button" id="btnCreate" class="btn btn-warning pull-right" style="padding: 2px; margin-top: -3px;" onclick="CreateNewRecord()">Create New Facility</button>
+                                    }
+                                    }
+                                  
+                                    <span class="image-center pull-right">
+                                        <a href="#"> <img src="~/styles/imgs/grid.png" width="22" title="GridView" onclick="Facilitydatagridview()" /></a>
+                                        <a href="#"><img src="~/styles/imgs/treegrid.png" width="26" title="TreeGrid" onclick="FacilityTreegrid()" /></a>
+                                    </span>
+                                </div>
+
+                                <div class="panel-body" id="TreeListHolder">
+                                    <div class="row padding-15">
+                                        <div class="row padding-15">
+                                            <div class="row padding-15" id="tableHolder">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body" id="ListRowBody">
+                                    <div class="row" style="padding-left: 15px; padding-right: 15px; ">
+
+                                        <div class="row" style="padding-left: 15px; padding-right: 15px; ">
+                                            <table class="table table-bordered" id="Facilitytable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Facility Name</th>
+                                                        <th>Organization</th>
+                                                        <!--<th width="100px" class="datatable-headerrow">Facility Type </th>-->
+                                                        <th width="100px" class="datatable-headerrow">Contact No.</th>
+                                                        <th width="100px" class="datatable-headerrow">Zip Code</th>
+                                                        <th width="150px" class="datatable-headerrow">Created Date</th>
+                                                        <th width="100px" class="datatable-headerrow">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div id="notes"></div>
+                    </div>
+
+                    <div class="row" id="EditRow">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><a href="#" onclick="cancelClicked();">Manage Facility</a> &gt; <span id="sp1"></span> Facility</div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="content">
+                                            <form class="login-form" id="FacilityForm" method="post">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9" id="lblOrganizationName">Facility Name <span class="compulsory">*</span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Enter Facility Name" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtFacilityName" name="FacilityName">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Organization <span class="compulsory">*</span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Select Organization" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <select class="form-control" id="ddlOrganization" name="Organization"></select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Address <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Enter Address of Facility" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtAddress" name="Address">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Contact Person <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Enter Contact Person Name" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtContactPerson" name="ContactPerson">
+                                                                </div>
+                                                            </div>
+
+                                                            @*First Change*@              <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Session Timeout <span class="compulsory">*</span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Enter Session Timeout" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtSessionTimeout" name="SessionTimeout">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">About Facility <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Enter Description About Facility" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <textarea rows="5" class="form-control placeholder-no-fix" placeholder="" id="txtAboutFacility" name="AboutFacility"></textarea>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group">
+
+
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">Zip Code <span class="compulsory">*</span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Select Zipcode" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtZipCode" name="ZipCode">
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9">City <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="City Name Populated Automatically based on Zipcode " tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtCity" readonly name="City" >
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9" id="lblContactNumber">State <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="State Name Populated Automatically based on Zipcode" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtState" readonly name="State">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="control-label visible-ie8 visible-ie9" id="lblContactNumber">Country <span class="compulsory"></span></label>
+                                                                <a href="#" data-toggle="tooltip" title="Country  Name Populated Automatically based on Zipcode" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                                <div class="input-icon">
+                                                                    <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtCountry" readonly name="Country">
+                                                                </div>
+                                                            </div>
+
+
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label visible-ie8 visible-ie9">Contact No<span class="compulsory">*</span></label>
+                                                            <a href="#" data-toggle="tooltip" title="Enter Facility Contact No." tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                            <div class="input-icon">
+                                                                <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtContactNo" name="Phone">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label visible-ie8 visible-ie9">Fax <span class="compulsory"></span></label>
+                                                            <a href="#" data-toggle="tooltip" title="Enter Facility Fax no" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                            <div class="input-icon">
+                                                                <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtFax" name="Fax">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="control-label visible-ie8 visible-ie9">Email <span class="compulsory">*</span></label>
+                                                            <a href="#" data-toggle="tooltip" title="Enter Facility Email Id" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                            <div class="input-icon">
+                                                                <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtEmail" name="Email">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="control-label visible-ie8 visible-ie9">Website <span class="compulsory"></span></label>
+                                                            <a href="#" data-toggle="tooltip" title="Enter Facility Website" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                            <div class="input-icon">
+                                                                <input class="form-control placeholder-no-fix" type="text" placeholder="" id="txtWebsite" name="Website">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-8" id="usersTreeListHolder">
+                                                        <div class="form-group">
+                                                            <label class="control-label visible-ie8 visible-ie9">Facility Admins <span class="compulsory"></span></label>
+                                                            <a href="#" data-toggle="tooltip" title="Select Facility Admins" tabindex="-1" style="float:right"><i class="fa fa-question-circle fa-lg"></i></a>
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+
+                                                                    <label class="control-label visible-ie8 visible-ie9" tabindex="-1" style="vertical-align:middle;">Admins Selection <span class="compulsory"></span></label>
+                                                                    <br />
+                                                                    <div class="" style="border:1px solid black;">
+                                                                        <input type="text" class="form-control" id="input-search" name="SourceTreeviewSearch" placeholder="Type to search..." value="">
+
+                                                                        <div id="default-tree" style="height: 400px; overflow: scroll;"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2 vcenter" style="height: 400px;">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 padding-10">
+                                                                            <a href="#" id="updateSelections" class="btn btn-block btn-sm btn-info">Update List <span class="glyphicon glyphicon-refresh"></span></a>
+                                                                        </div>
+                                                                        <div class="col-md-12 padding-10">
+                                                                            <a href="#" id="SelectAll" class="btn btn-block btn-sm btn-success">Select All <span class="glyphicon glyphicon-ok"></span></a>
+                                                                        </div>
+                                                                        <div class="col-md-12 padding-10">
+                                                                            <a href="#" id="deSelectAll" class="btn btn-block btn-sm btn-danger">De-Select All <span class="glyphicon glyphicon-remove"></span></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <label class="control-label visible-ie8 visible-ie9"> Selected Admins <span class="compulsory"></span></label>
+                                                                    <br />
+                                                                    <div class="" style="border:1px solid black;">
+                                                                        <input type="text" class="form-control" id="result-input-search" name="DestinationTreeviewSearch" placeholder="Type to search..." />
+
+                                                                        <div id="result-tree" style="height: 400px; overflow: scroll;"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 input-icon text-right">
+                                                        <button type="button" id="btnCancel" class="btn btn-default" style="margin-right: 5px;" onclick="cancelClicked()">Cancel</button>
+                                                        <button type="button" id="btnSubmit" class="btn btn-primary" onclick="submitClicked()">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2"></div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Bottom{
+    <script type="text/javascript">
+
+
+    $.validator.addMethod(
+       "dropdownlistForOrganization",
+       function (value, element, condition) {
+           return $(element).val() != 0;
+       },
+       "Please Select Organization "
+   );
+
+
+    var notes;
+
+    function callnotify(message, type) {
+        var msgtype = "success";
+        switch (type) {
+            case 1:
+                msgtype = "success";
+                break;
+            case 2:
+                msgtype = "info";
+                break;
+            case 3:
+                msgtype = "warning";
+                break;
+            case 4:
+                msgtype = "danger";
+                break;
+            default:
+                msgtype = "success";
+                break;
+        }
+
+        notes.show(message, {
+            // 'success', 'info', 'warning', 'danger'
+            type: '' + msgtype + ''
+        });
+    }
+
+
+    var $defaultTree;
+    var $resultTree;
+
+    function performRefresh() {
+        $.showLoading({
+            name: 'circle-fade'
+        });
+        var ress = $defaultTree.treeview("getChecked");
+        var arr = [];
+        for (var i = 0; i < ress.length; i++) {
+            var res = {};
+            if (ress[i].nodetype === 0) {
+                res.value = ress[i].value;
+                res.text = ress[i].text;
+                res.parent = ress[i].parent;
+                arr.push(res);
+            }
+        }
+        var json = JSON.stringify(arr);
+        $.ajax({
+            url: '@Url.Action("SubResults", "ChatGroup")',
+            type: "Get",
+            data: { selections: '' + json + '', currentrecord: '' + recordid + '' },
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            traditional: true,
+            success: function (result_myTree) {
+                $resultTree = $('#result-tree').treeview({
+                    data: result_myTree,
+                    levels: 3,
+                    expandIcon: 'glyphicon glyphicon-plus',
+                    collapseIcon: 'glyphicon glyphicon-minus',
+                    emptyIcon: 'glyphicon',
+                    nodeIcon: "glyphicon glyphicon-user",
+                    selectedIcon: '',
+                    //checkedIcon: 'glyphicon glyphicon-check',
+                    checkedIcon: 'fa fa-check-square-o fa-2x extra-margin',
+                    //uncheckedIcon: 'glyphicon glyphicon-unchecked',
+                    uncheckedIcon: 'fa fa-square-o fa-2x extra-margin',
+                    color: '#000000',
+                    backColor: '#FFFFFF',
+                    borderColor: '#dddddd',
+                    onhoverColor: '#F5F5F5',
+                    selectedColor: '#FFFFFF',
+                    selectedBackColor: '#428bca',
+                    searchResultColor: '#FFFFFF',
+                    searchResultBackColor: '#a94442',
+                    highlightSelected: false,
+                    highlightSearchResults: true,
+                    showBorder: true
+                });
+                var search = function (e) {
+                    var pattern = $('#result-input-search').val();
+                    var options = {
+                        ignoreCase: true,
+                        exactMatch: false,
+                        revealResults: true
+                    };
+                    var results = $resultTree.treeview('search', [pattern, options]);
+                }
+                $('#result-input-search').on('keyup', search);
+                $.hideLoading();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+            }
+        });
+
+    }
+
+    function resetTreegrid() {
+        $('#usersTreeListHolder').hide();
+        $('#default-tree').empty();
+        $('#result - tree').empty();
+    }
+
+    function updateTreegrid() {
+        $('#usersTreeListHolder').show();
+        $.showLoading({
+            name: 'circle-fade' //circle-fade, line-pulse, jump-pulse, circle-turn, circle-turn-scale, circle-fade, square-flip, line-scale
+        });
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("Result", "Facility")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                data: { currentrecord: '' + recordid + '' },
+                success: function (myTree) {
+
+                    $defaultTree = $('#default-tree').treeview({
+                        data: myTree,
+                        onNodeChecked: function (event, node) {
+                            for (var i in node.nodes) {
+                                if (node.nodes.hasOwnProperty(i)) {
+                                    var child = node.nodes[i];
+                                    $(this).treeview(true).checkNode(child.nodeId, { slient: true });
+                                }
+                            }
+                        },
+
+                        onNodeUnchecked: function (event, node) {
+                            for (var i in node.nodes) {
+                                if (node.nodes.hasOwnProperty(i)) {
+                                    var child = node.nodes[i];
+                                    $(this).treeview(true).uncheckNode(child.nodeId);
+                                }
+                            }
+                        },
+                        levels: 3,
+                        expandIcon: 'glyphicon glyphicon-plus',
+                        collapseIcon: 'glyphicon glyphicon-minus',
+                        emptyIcon: 'glyphicon',
+                        nodeIcon: '',
+                        selectedIcon: '',
+                        //checkedIcon: 'glyphicon glyphicon-check',
+                        checkedIcon: 'fa fa-check-square-o fa-2x extra-margin',
+                        //uncheckedIcon: 'glyphicon glyphicon-unchecked',
+                        uncheckedIcon: 'fa fa-square-o fa-2x extra-margin-unchecked',
+                        color: '#000000',
+                        backColor: '#FFFFFF',
+                        borderColor: '#dddddd',
+                        onhoverColor: '#F5F5F5',
+                        selectedColor: '#FFFFFF',
+                        selectedBackColor: '#428bca',
+                        searchResultColor: '#FFFFFF',
+                        searchResultBackColor: '#a94442',
+                        enableLinks: false,
+                        highlightSelected: false,
+                        highlightSearchResults: true,
+                        showBorder: true,
+                        showIcon: true,
+                        showCheckbox: true,
+                        showTags: true,
+                        multiSelect: true
+
+                    });
+
+                    performRefresh();
+
+                    var search = function (e) {
+                        var pattern = $('#input-search').val();
+                        var options = {
+                            ignoreCase: true,
+                            exactMatch: false,
+                            revealResults: true
+                        };
+                        var results = $defaultTree.treeview('search', [pattern, options]);
+                    }
+                    var selectAll = function (e) {
+                        $defaultTree.treeview('checkAll', { silent: true });
+                        performRefresh();
+                    }
+                    var deSelectAll = function (e) {
+                        $defaultTree.treeview('uncheckAll', { silent: true });
+                        performRefresh();
+                    }
+                    $('#SelectAll').on('click', selectAll);
+                    $('#deSelectAll').on('click', deSelectAll);
+
+                    $('#input-search').on('keyup', search);
+                    $('#updateSelections').on('click', performRefresh);
+
+                    //$.hideLoading();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    }
+
+
+    var _zipId;
+
+    var form;
+
+    $(document).ready(function () {
+        currentview = 1;
+        $('[data-toggle="tooltip"]').tooltip();
+
+        notes = $('#notes').notify({
+            type: 'notes',
+            sticky: true,
+            delay: 3000,
+            removeIcon: '<i class="fa fa-remove"></i>'
+        });
+
+        bindatatables();
+        fillOrganizations();
+        initializeZipCode();
+        bindValidatidations();
+    });
+
+    function bindValidatidations() {
+        form = $("#FacilityForm").validate({
+            debug: true,
+            rules: {
+                FacilityName: {
+                    required: true,
+                    minlength: 3,
+                    remote:
+                  {
+                      url: '@Url.Action("CheckIfValidFacilityName", "Facility")',
+                      type: "post",
+                      data:
+                      {
+                          facility: function () {
+                              return $("#txtFacilityName").val() + '||||' + recordid;
+                          }
+                      }
+                  }
+                },
+                Organization: {
+                    dropdownlistForOrganization: true
+                },
+
+                Email: {
+                    required: true,
+                    email: true,
+                    remote:
+                    {
+                        url: '@Url.Action("CheckIfValidEmail", "Facility")',
+                        type: "post",
+                        data:
+                        {
+                            email2: function () {
+                                return $("#txtEmail").val() + '||||' + recordid;
+                            }
+                        }
+                    }
+                },
+                Phone: {
+                    required: true,
+                    pattern: /^[0-9]{8,14}$/,
+                    remote: {
+                        url: '@Url.Action("CheckIfValidContactNumber", "Facility")',
+                        type: "post",
+                        data:
+                        {
+                            phonenumber: function () {
+                                return $("#txtContactNo").val() + '||||' + recordid;
+                            }
+                        }
+                    }
+                },
+                SessionTimeout: {
+                    required: true,
+                    pattern: /^[0-9]/,
+                },
+                ZipCode:
+                {
+                    required: true,
+                    zipcode:true,
+                    remote: {
+                        url: '@Url.Action("checkifvalidZipcode", "UserDatatables")',
+                        type: "post",
+                        delay: 3000,
+                        data:
+                        {
+                            zipcode: function () {
+                                return $("#txtZipCode").val();
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    FacilityName: {
+                        required: "First Name Field Is Required!",
+                        minlength: "At Least 3 Characters Required!"
+                    },
+                    ContactNo: {
+                        required: "Contact Number is Required!",
+                        pattern: "Contact Number is not valid, please check!"
+                    },
+                    //AboutFacility:
+                    //    {
+                    //        required: "About Facility Field is Required!"
+                    //    },
+                    ZipCode: {
+                        required: "ZipCode is Required!",
+                        pattern: "Enter Numbers Only"
+
+                    }
+
+                }
+            }
+        });
+    }
+
+    function initializeZipCode() {
+        $("#txtZipCode").autocomplete({
+            minLength: 3,
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetMatchingZipCodeResult", "Organisation")',
+                    data: "{ 'prefix': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                val: item.split('-')[0],
+                                label: item.split('-')[1] + " - " + item.split('-')[2] + " - " + item.split('-')[3] + " - " + item.split('-')[4],
+                                label2: item.split('-')[1],
+                                country: item.split('-')[2],
+                                state: item.split('-')[3],
+                                value: item.split('-')[1],
+                                city: item.split('-')[4]
+                            }
+                        }))
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                _zipId = i.item.val;
+                $("#txtZipCode").val(i.item.label2);
+                $("#txtCountry").val(i.item.country)
+                $("#txtState").val(i.item.state)
+                $("#txtCity").val(i.item.city)
+            },
+        });
+    }
+
+
+    function bindatatables() {
+        $('#Facilitytable').dataTable({
+            destroy: true,
+            "columns": [
+                {
+                    "data": "FacilityMasterName",
+
+                },
+
+                {
+                    "data": "OrganisationName"
+                },
+
+
+                //{
+                //    "data": "FacilityType",
+
+                //},
+                {
+                    "data": "Phone",
+                    render: function (data, type, row) {
+                        var phone = data;
+                        if (phone != null && phone.length == 10) {
+                            phone = phone.substr(0, 3) + '-' + phone.substr(3, 3) + '-' + phone.substr(6, 4);
+                            return phone;
+                        }
+                        return phone;
+                    }
+                },
+
+                {
+                    "data": "PostalCode",
+                    render: function (data, type, row) {
+                        var postal = data;
+                        if (postal != null) {
+                            return appendChars(postal, 5, "0");
+                        }
+                        return postal;
+                    }
+                },
+                {
+                    data: "CreatedDate",
+                    render: function (data, type, row) {
+                        var res = data;
+
+
+                        if (res != null) {
+                            res = res.replace("/Date(", "").replace(")/", "");
+                            var d = new Date(parseInt(res));
+
+                            return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + getHours12(d.getHours()) + ':' + TostringForDate(d.getMinutes()) + " " + getMeridiem(d.getHours());
+                        }
+                        return res;
+                    }
+
+                },
+                {
+                    data: "FacilityMasterId",
+                    render: function (data, type, row) {
+                        var res = data;
+                        @{
+                             UserLoginInformation activeuser = (UserLoginInformation)ViewData["CURRENTUSER"];
+                             int[] facids = @activeuser.Facility.OOrganisation.GetAssocaitedFacilityIDs();
+                             string idvals = string.Empty;
+                             int count = facids.Length;
+                             }
+
+                        @for (var i = 0; i < facids.Length; i++) {
+                            idvals += facids[i];
+                            if (count > facids.Length - 1)
+                            {
+                                idvals += ",";
+                            }
+                        }
+                        var include = false;
+                        var idvals_js = "@idvals";
+                        var arr_ids = [];
+                        var temps = idvals_js.split(',');
+                        for (var i = 0; i < temps.length; i++) {
+                            arr_ids.push(parseInt(temps[i]));
+                        }
+
+
+                        
+                        var IsSuperAdmin_js = "@activeuser.IsSuperAdmin";
+                        var IsOrgAdmin_js = "@activeuser.IsOrganisationAdmin";
+                        var IsFacAdmin_js = "@activeuser.IsFacilityAdmin";
+                        var CurrentFacilityId = "@activeuser.FacilityId";
+
+
+                        if (IsOrgAdmin_js == "True") {
+                            include = contains(arr_ids, res);
+                        }
+                        else if (IsFacAdmin_js == "True") {
+                            include = CurrentFacilityId == res;
+                        }
+
+                        var ViewImageString = "<img src=\"@Url.Content("~/styles/imgs/view.png")\" title=\"View\" width=\"25\" height=\"25\" border=\"0\" style=\"margin-right:5px\" id=\"btnView_" + res + "\" onclick=\"RecoredEdit(" + res + ",1)\" > ";
+                        var EditImageString = "<img src=\"@Url.Content("~/styles/imgs/edit.png")\" title=\"Edit\" width=\"20\" height=\"20\" border=\"0\" style=\"margin-right:5px\" id=\"btnEdit_" + res + "\" onclick=\"RecoredEdit(" + res + ",2)\" > ";
+                        var DeleteImageString = "<img src=\"@Url.Content("~/styles/imgs/delete.png")\" title=\"Delete\" width=\"20\" height=\"20\" border=\"0\" id=\"btnDelete_" + res + "\" onclick=\"RecordDelete(" + res + ")\">";
+
+                        if (IsSuperAdmin_js == "True" || (IsOrgAdmin_js == "True" && include) || (IsFacAdmin_js == "True" && include)) {
+                            res =
+                             "<p align=\"center\">" +
+                             "<a href=\"#\">" +
+                             ViewImageString +
+                             EditImageString +
+                             DeleteImageString +
+                             "</a>" +
+                             "</p>";
+                        }
+                        else {
+                            res =
+                               "<p align=\"center\">" +
+                               "<a href=\"#\">" +
+                               ViewImageString +
+                               "</a>" +
+                               "</p>";
+                        }
+                        return res;
+                    }
+                }
+            ],
+            sAjaxSource: '@Url.Action("FacilityInfoList", "Facility")',
+            "columnDefs": [
+            { "className": "dt-left datatable-cellvalign", "targets": [0, 1] },
+            { "className": "dt-center datatable-cellvalign", "targets": [2, 3, 4, 5] },
+            { "className": "datatable-cellvalign", "targets": "_all" }
+            ]
+
+        });
+
+    }
+
+        function contains(a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i] === obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    function TostringForDate(value) {
+        var test = "" + value;
+        if (test.length == 1) return "0".concat(test);
+        return test;
+    }
+
+    function getHours12(value) {
+        return TostringForDate((value + 11) % 12 + 1); // edited.
+    }
+
+
+
+    function getMeridiem(value) {
+        return value > 12 ? 'PM' : 'AM';
+    }
+
+    function CreateNewRecord() {
+        resetTreegrid();
+        if (currentview == 1) {
+            ShowHideList(true, true);
+        }
+        else {
+            ShowHideTree(true, true);
+        }
+        ShowHideEdit(false);
+        UpdateFields(null);
+        $("Form :input").prop("disabled", false);
+        recordid = 0;
+    }
+
+    function UpdateFields(facility) {
+        if (facility != null) {
+            $('#txtFacilityName').val(facility.FacilityMasterName);
+            $("#ddlOrganization").val(facility.OrganisationId);
+            $('#txtContactNo').val(facility.Phone);
+            $('#txtContactPerson').val(facility.ContactPerson);
+            $('#txtAboutFacility').val(facility.Notes);
+            $('#txtAddress').val(facility.AddressLine1);
+            $('#txtZipCode').val(appendChars(facility.PostalCode, 5, "0"));
+            $('#txtCity').val(facility.City);
+            $('#txtState').val(facility.State);
+            $('#txtCountry').val(facility.Landmark); //////////////////////Landmark column verify with madam//////////////
+            $('#txtFax').val(facility.Fax);
+            $('#txtWebsite').val(facility.Website);
+            $('#txtEmail').val(facility.Email);
+            $('#txtSessionTimeout').val(facility.SessionTimeout);
+        } else {
+            $("#sp1").html("Create New");
+            $('#txtFacilityName').val("");
+            $('#ddlOrganization').val("0");
+            $('#txtContactNo').val("");
+            $('#txtContactPerson').val("");
+            $('#txtAboutFacility').val("");
+            $('#txtAddress').val("");
+            $('#txtZipCode').val("");
+            $('#txtCity').val("");
+            $('#txtState').val("");
+            $('#txtCountry').val("");
+            $('#txtWebsite').val("");
+            $('#txtEmail').val("");
+            $('#txtFax').val("");
+            $('#txtSessionTimeout').val("20");
+        }
+    }
+
+
+    var recordid;
+
+    function RecoredEdit(id, pg) {
+
+        if (currentview == 1) {
+            if (pg == 2) {
+                ShowHideList(true, true);
+                ShowHideEdit(false);
+            }
+            else {
+                ShowHideList(true, true);
+                ShowHideEdit(false);
+            }
+        }
+        else {
+
+            if (pg == 2) {
+                ShowHideTree(true, true);
+                ShowHideEdit(false);
+            }
+            else {
+                ShowHideTree(true, true);
+                ShowHideEdit(false);
+            }
+        }
+
+        if (id != 0 && pg == 1) {
+            $("#sp1").html("View");
+        }
+        else if (id != 0 && pg == 2) {
+            $("#sp1").html("Edit");
+        }
+
+        recordid = id;
+        ShowHideEdit(false);
+
+        updateTreegrid();
+
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("getMatchingFacility", "Facility")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                data: { selectedfacility: '' + id + '' },
+                datatype: "json",
+                success: function (facility) {
+                    UpdateFields(facility);
+                    $("Form :input").prop("disabled", false);
+                    if (pg == "1") {
+                        $("Form :input").prop("disabled", true);
+                        $("#btnCancel").prop("disabled", false);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    }
+
+
+    function RecordDelete(id) {
+        if (confirm("Are you sure want to delete this Record?")) {
+
+
+            $(function () {
+                $.ajax({
+                    url: '@Url.Action("DeleteSingleOrDefaultFacilityRecord", "Facility")',
+                    type: "Get",
+                    contentType: "application/json; charset=utf-8",
+                    data: { selectedfacility: '' + id + '' },
+                    datatype: "json",
+                    success: function (facility) {
+                        if (currentview == 2) {
+
+                            if (facility == 2) {
+                                // alert("Cannot delete facility as it has references");
+                                callnotify("Cannot delete facility as it has references", 4);
+                            }
+
+                            else {
+                                //alert("Successfully deleted facility");
+                                callnotify("Record is Deleted Sucessfully", 3);
+                                FacilityTreegrid();
+                                //ShowHideList(false);
+                                ShowHideTree(false);
+                            }
+                        }
+                        else {
+
+                            if (facility == 2) {
+                                callnotify("Cannot delete facility as it has references", 4);
+
+                                // alert("Cannot delete facility as it has references");
+                            }
+                            else {
+                                //alert("Successfully deleted facility");
+                                callnotify("Record is Deleted Sucessfully", 3);
+                                bindatatables();
+                                //ShowHideTree(false);
+                                ShowHideList(false);
+                            }
+                        }
+
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        callnotify("Record is Not Deleted", 4);
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+        }
+
+    }
+
+
+    function fillOrganizations() {
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("GetAllOrganizations", "Facility")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                success: function (organizations) {
+                    var options = "<option value=\"0\"> Please Select </option>";
+                    for (var i = 0; i < organizations.length; i++) {
+                        var name = organizations[i].Name;
+                        options += "<option value=\"" + organizations[i].OrganisationId + "\">" + name + "</option>";
+                    }
+                    $("#ddlOrganization").append(options);
+                    $("#ddlOrganization").val("0");
+                }
+            })
+
+
+        });
+    }
+
+
+    function fillOrganizationsExceptSelected(selected, parent) {
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("GetAllOrganizationsExceptSelected", "Organisation")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                data: { selectedOrg: '' + selected + '' },
+                datatype: "json",
+                success: function (organizations) {
+                    var options = "<option value=\"0\"> Please Select </option>";
+                    for (var i = 0; i < organizations.length; i++) {
+                        var name = organizations[i].Name;
+                        options += "<option value=\"" + organizations[i].OrganisationId + "\">" + name + "</option>";
+                    }
+                    $("#ddlParent").empty().append(options);
+                    if (parent == null) $("#ddlParent").val("0");
+                    else $("#ddlParent").val(parent);
+                }
+            })
+
+
+        });
+    }
+
+
+    $(document).ready(function () {
+        ShowHideEdit(true);
+    });
+
+    function ShowHideEdit(hide) {
+        if (hide) $('#EditRow').hide();
+        else $('#EditRow').show();
+    }
+
+    function ShowHideList(hide, hidepanel) {
+        if (hide) $('#ListRowBody').hide();
+        else $('#ListRowBody').show();
+        if (hidepanel) $('#ListRow').hide();
+        else $('#ListRow').show();
+    }
+
+    function ShowHideTree(hide, hidepanel) {
+        if (hide) $('#TreeListHolder').hide();
+        else $('#TreeListHolder').show();
+        if (hidepanel) $('#ListRow').hide();
+        else $('#ListRow').show();
+    }
+
+    function appendChars(value, desiredlength, requiredchar) {
+        if (value == null) return value;
+        if ((value + "").length >= desiredlength) return value;
+        var missing = desiredlength - (value + "").length;
+        var res = requiredchar;
+        for (var i = 0; i < missing - 1; i++) {
+            res += requiredchar;
+        }
+        return res + value;
+    }
+
+
+    function cancelClicked() {
+
+        if (currentview == 2) {
+            ShowHideEdit(true);
+            ShowHideTree(false);
+        }
+        else {
+            ShowHideEdit(true);
+            ShowHideList(false);
+        }
+        form.resetForm();
+    }
+
+    function submitClicked() {
+        if ($("#FacilityForm").valid()) {
+            if ($resultTree != null) {
+                var ress1 = [];
+                var nodeid = 0;
+                var found = false;
+                var node = undefined;
+                do {
+                    node = $resultTree.treeview('getNode', nodeid);
+                    nodeid++;
+                    ress1.push(node);
+                    if (node.nodeId != undefined && parseInt(node.domainid) === 1) {
+                        found = true;
+                    }
+                } while (node.nodeId !== undefined && !found);
+                var arr1 = [];
+                for (var j = 0; j < ress1.length; j++) {
+                    var res1 = {};
+                    if (ress1[j].nodetype === 0) {
+                        res1.value = ress1[j].value;
+                        res1.text = ress1[j].text;
+                        res1.parent = ress1[j].parent;
+                        arr1.push(res1);
+                    }
+                }
+
+                var json1 = JSON.stringify(arr1);
+            }
+            var facilitymodel = {
+                FacilityMasterId: recordid,
+                FacilityMasterName: $("#txtFacilityName").val(),
+                OrganisationId: $('#ddlOrganization').val(),
+                Phone: $('#txtContactNo').val(),
+                ContactPerson: $('#txtContactPerson').val(),
+                Notes: $('#txtAboutFacility').val(),
+                AddressLine1: $('#txtAddress').val(),
+                PostalCode: $('#txtZipCode').val(),
+                ZipId: _zipId,
+                City: $('#txtCity').val(),
+                State: $('#txtState').val(),
+                Landmark: $('#txtCountry').val(),
+                Website: $('#txtWebsite').val(),
+                Email: $('#txtEmail').val(),
+                Fax: $('#txtFax').val(),
+                SessionTimeout: $('#txtSessionTimeout').val(),
+                UserSelections: json1
+            };
+
+            $(function () {
+                $.ajax({
+                    url: '@Url.Action("UpdateFacilittMaster", "Facility")',
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(facilitymodel),
+                    datatype: "json",
+                    async: true,
+                    processData: false,
+                    cache: false,
+                    success: function (response) {
+
+                        if (currentview == 2) {
+                            if (facilitymodel.FacilityMasterId == 0)
+                                callnotify("New Record Saved Sucessfully", 1);
+                            else
+                                callnotify("Record Is Updated Sucessfully", 2);
+                            FacilityTreegrid();
+                        } else {
+                            if (facilitymodel.FacilityMasterId == 0)
+                                callnotify("New Record Saved Sucessfully", 1);
+                            else
+                                callnotify("Record Is Updated Sucessfully", 2);
+                            Facilitydatagridview();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        callnotify("Record Saving Failed", 4);
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+            recordid = 0;
+        }
+
+    }
+
+    function FacilityTreegrid() {
+
+        currentview = 2;
+
+        $(function () {
+            $.ajax({
+                url: '@Url.Action("TreeGridData", "Facility")',
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                success: function (table) {
+                    $("#ListRowBody").hide();
+                    InitializeTree(table);
+                    ShowHideTree(false);
+                    ShowHideEdit(true);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    }
+
+    function InitializeTree(ptable) {
+        var res = "<table class=\"table tree\"><thead><tr><th width=\"250\">Name</th><th width=\"100\">Contact Number</th> <th width=\"100\">Zip Code</th> <th width=\"150\">Created Date</th> <th width=\"100\" style=\"text-align: center;\">Actions</th> </tr> </thead> <tbody> " + ptable + "</tbody></table>";
+        $('#tableHolder').empty().append(res);
+        $('.tree').treegrid({
+            expanderExpandedClass: 'glyphicon glyphicon-chevron-down',
+            expanderCollapsedClass: 'glyphicon glyphicon-chevron-right'
+        });
+    }
+
+    var currentview;
+    function Facilitydatagridview() {
+        currentview = 1;
+        bindatatables();
+        ShowHideList(false);
+        ShowHideTree(true);
+        ShowHideEdit(true);
+    }
+
+
+
+    </script>
+}
